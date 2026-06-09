@@ -11,5 +11,6 @@ class Palette {
   std::vector<Color> m_colors{};
 
 public:
+  Palette() : m_colors{} {}
 
 };
