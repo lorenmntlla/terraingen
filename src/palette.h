@@ -8,7 +8,7 @@ struct Color {
 };
 
 class Palette {
-  std::vector<Color> Colors;
+  std::vector<Color> m_colors{};
 
 public:
 
