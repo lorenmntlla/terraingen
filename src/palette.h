@@ -2,9 +2,9 @@
 #include <vector>
 
 struct Color {
-  unsigned char r;
-  unsigned char g;
-  unsigned char b;
+  std::uint8_t r;
+  std::uint8_t g;
+  std::uint8_t b;
 };
 
 class Palette {
