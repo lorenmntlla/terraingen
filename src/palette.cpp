@@ -7,10 +7,10 @@ Palette::Palette() : m_colors{} {}
 Palette::Palette(const Palette &palette) : m_colors{palette.m_colors} {}
 
 Palette::Palette(std::ifstream &file) : m_colors{} {
-  std::string color_hex{};
+  std::string hex{};
 
-  while (std::getline(file, color_hex))
-    addColor(color_hex);
+  while (std::getline(file, hex))
+    addColor(hex);
 }
 
 uint8_t Palette::parseChannel(std::string_view sv) const {
