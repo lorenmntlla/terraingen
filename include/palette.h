@@ -1,17 +1,11 @@
 #pragma once
+#include "color.h"
 #include <charconv>
-#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <optional>
 #include <string_view>
 #include <vector>
-
-struct Color {
-  uint8_t r;
-  uint8_t g;
-  uint8_t b;
-};
 
 class Palette {
   std::vector<Color> m_colors{};
