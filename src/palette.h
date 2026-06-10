@@ -51,4 +51,6 @@ public:
 
     m_colors.push_back(color);
   }
+
+  size_t getColorQuantity() { return m_colors.size(); }
 };
