@@ -30,7 +30,7 @@ public:
   void addColor(const Color &color) { m_colors.push_back(color); }
 
   void addColor(const std::uint8_t &r, const uint8_t &g, const uint8_t &b) {
-    m_colors.push_back({r, g, b});
+    m_colors.push_back(Color{r, g, b});
   }
 
   void addColor(std::string_view color_hex) {
