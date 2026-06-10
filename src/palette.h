@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -53,4 +54,14 @@ public:
   }
 
   size_t getColorQuantity() { return m_colors.size(); }
+
+  void printColor(size_t i = 0) {
+    std::cout << '(' << (int)m_colors[i].r << ", " << (int)m_colors[i].g << ", "
+              << (int)m_colors[i].b << ')' << '\n';
+  }
+
+  void printColors() {
+    for (size_t i{0}; i < getColorQuantity(); i++)
+      printColor(i);
+  }
 };
