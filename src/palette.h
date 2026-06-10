@@ -60,7 +60,7 @@ public:
               << (int)m_colors[i].b << ')' << '\n';
   }
 
-  void printColors() {
+  void printAllColors() {
     for (size_t i{0}; i < getColorQuantity(); i++)
       printColor(i);
   }
