@@ -17,6 +17,8 @@ public:
 
   Palette(const Palette &palette);
 
+  Palette(const std::vector<Color> &colors);
+
   void addColor(const Color &color);
 
   void addColor(const uint8_t &r, const uint8_t &g, const uint8_t &b);

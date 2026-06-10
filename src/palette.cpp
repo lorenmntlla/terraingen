@@ -20,6 +20,8 @@ uint8_t Palette::parseChannel(std::string_view sv) const {
 
 Palette::Palette(const Palette &palette) : m_colors{palette.m_colors} {}
 
+Palette::Palette(const std::vector<Color> &colors) : m_colors{colors} {}
+
 void Palette::addColor(const Color &color) { m_colors.push_back(color); }
 
 void Palette::addColor(const uint8_t &r, const uint8_t &g, const uint8_t &b) {
