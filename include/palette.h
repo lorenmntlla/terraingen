@@ -7,9 +7,9 @@
 #include <vector>
 
 struct Color {
-  std::uint8_t r;
-  std::uint8_t g;
-  std::uint8_t b;
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
 };
 
 class Palette {
@@ -29,7 +29,7 @@ public:
 
   void addColor(const Color &color) { m_colors.push_back(color); }
 
-  void addColor(const std::uint8_t &r, const uint8_t &g, const uint8_t &b) {
+  void addColor(const uint8_t &r, const uint8_t &g, const uint8_t &b) {
     m_colors.push_back(Color{r, g, b});
   }
 
