@@ -1,9 +1,11 @@
 #pragma once
+#include <charconv>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 struct Color {
@@ -14,6 +16,13 @@ struct Color {
 
 class Palette {
   std::vector<Color> m_colors{};
+
+  uint8_t parseChannel(std::string_view sv) {
+    uint8_t channel{};
+    std::from_chars(sv.data(), sv.data() + sv.size(), channel, 16);
+
+    return channel;
+  }
 
 public:
   Palette() : m_colors{} {}
@@ -44,12 +53,9 @@ public:
     if (hex.size() != 6)
       return;
 
-    uint8_t red =
-        static_cast<uint8_t>(std::stoi(std::string{hex[0], hex[1]}, 0, 16));
-    uint8_t green =
-        static_cast<uint8_t>(std::stoi(std::string{hex[2], hex[3]}, 0, 16));
-    uint8_t blue =
-        static_cast<uint8_t>(std::stoi(std::string{hex[4], hex[5]}, 0, 16));
+    uint8_t red = parseChannel(hex.substr(0, 2));
+    uint8_t green = parseChannel(hex.substr(2, 2));
+    uint8_t blue = parseChannel(hex.substr(4, 2));
 
     m_colors.push_back(Color{red, green, blue});
   }
