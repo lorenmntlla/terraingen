@@ -1,4 +1,5 @@
 #include "../include/palette.h"
+#include <iostream>
 #include <fstream>
 
 int main() {
