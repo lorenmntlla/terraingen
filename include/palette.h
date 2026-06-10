@@ -34,6 +34,9 @@ public:
   }
 
   void addColor(std::string_view hex) {
+    if (hex.empty())
+      return;
+
     if (hex.front() == '#')
       hex.remove_prefix(1);
 
