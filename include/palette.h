@@ -35,19 +35,23 @@ public:
 
   void addColor(std::string_view color_hex) {
     Color color{};
-    for (size_t i{0}; i < color_hex.size() - 1; i += 2) {
-      if (color_hex[i] == '#')
-        i++;
 
+    if (color_hex.front() == '#')
+      color_hex.remove_prefix(1);
+
+    if (color_hex.size() != 6)
+      return;
+
+    for (size_t i{0}; i < color_hex.size() - 1; i += 2) {
       std::string color_digit{color_hex[i], color_hex[i + 1]};
 
-      if (i == 0 or i == 1)
+      if (i == 0)
         color.r = static_cast<std::uint8_t>(std::stoi(color_digit, 0, 16));
 
-      if (i == 2 or i == 3)
+      if (i == 2)
         color.g = static_cast<std::uint8_t>(std::stoi(color_digit, 0, 16));
 
-      if (i == 4 or i == 5)
+      if (i == 4)
         color.b = static_cast<std::uint8_t>(std::stoi(color_digit, 0, 16));
     }
 
