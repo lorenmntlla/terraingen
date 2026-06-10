@@ -1,4 +1,4 @@
-#include "./palette.h"
+#include "../include/palette.h"
 #include <fstream>
 
 int main() {
