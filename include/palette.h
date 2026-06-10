@@ -16,7 +16,7 @@ struct Color {
 class Palette {
   std::vector<Color> m_colors{};
 
-  uint8_t parseChannel(std::string_view sv) {
+  uint8_t parseChannel(std::string_view sv) const {
     uint8_t channel{};
     std::from_chars(sv.data(), sv.data() + sv.size(), channel, 16);
 
