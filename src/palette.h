@@ -54,16 +54,16 @@ public:
     m_colors.push_back(color);
   }
 
-  size_t getColorQuantity() { return m_colors.size(); }
+  size_t getColorQuantity() const { return m_colors.size(); }
 
-  std::optional<Color> getColor(size_t i = 0) {
+  std::optional<Color> getColor(size_t i = 0) const {
     if (i >= getColorQuantity())
       return std::nullopt;
 
     return m_colors[i];
   }
 
-  bool printColor(size_t i = 0) {
+  bool printColor(size_t i = 0) const {
     auto maybe_color{getColor(i)};
     if (!maybe_color) {
       std::cerr << "Color " << i << " not in palette\n";
@@ -78,7 +78,7 @@ public:
     return true;
   }
 
-  void printAllColors() {
+  void printAllColors() const {
     for (size_t i{0}; i < getColorQuantity(); i++)
       printColor(i);
   }
