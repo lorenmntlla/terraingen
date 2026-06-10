@@ -11,8 +11,8 @@ Palette::Palette(std::ifstream &file) : m_colors{} {
     addColor(hex);
 }
 
-channel Palette::parseChannel(std::string_view sv) const {
-  channel channel{};
+channel_t Palette::parseChannel(std::string_view sv) const {
+  channel_t channel{};
   std::from_chars(sv.data(), sv.data() + sv.size(), channel, 16);
 
   return channel;
@@ -24,7 +24,8 @@ Palette::Palette(const std::vector<Color> &colors) : m_colors{colors} {}
 
 void Palette::addColor(const Color &color) { m_colors.push_back(color); }
 
-void Palette::addColor(const channel &r, const channel &g, const channel &b) {
+void Palette::addColor(const channel_t &r, const channel_t &g,
+                       const channel_t &b) {
   m_colors.push_back(Color{r, g, b});
 }
 
@@ -39,9 +40,9 @@ void Palette::addColor(std::string_view hex) {
   if (hex.size() != 6)
     return;
 
-  channel red = parseChannel(hex.substr(0, 2));
-  channel green = parseChannel(hex.substr(2, 2));
-  channel blue = parseChannel(hex.substr(4, 2));
+  channel_t red = parseChannel(hex.substr(0, 2));
+  channel_t green = parseChannel(hex.substr(2, 2));
+  channel_t blue = parseChannel(hex.substr(4, 2));
 
   m_colors.push_back(Color{red, green, blue});
 }

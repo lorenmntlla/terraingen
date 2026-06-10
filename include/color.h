@@ -1,10 +1,10 @@
 #pragma once
 #include <cstdint>
 
-typedef uint8_t channel;
+typedef uint8_t channel_t;
 
 struct Color {
-  channel r;
-  channel g;
-  channel b;
+  channel_t r;
+  channel_t g;
+  channel_t b;
 };
