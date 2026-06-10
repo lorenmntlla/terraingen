@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <fstream>
 #include <iostream>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -55,9 +56,26 @@ public:
 
   size_t getColorQuantity() { return m_colors.size(); }
 
-  void printColor(size_t i = 0) {
-    std::cout << '(' << (int)m_colors[i].r << ", " << (int)m_colors[i].g << ", "
-              << (int)m_colors[i].b << ')' << '\n';
+  std::optional<Color> getColor(size_t i = 0) {
+    if (i >= getColorQuantity())
+      return std::nullopt;
+
+    return m_colors[i];
+  }
+
+  bool printColor(size_t i = 0) {
+    auto maybe_color{getColor(i)};
+    if (!maybe_color) {
+      std::cerr << "Color " << i << " not in palette\n";
+      return false;
+    }
+
+    Color color = *maybe_color;
+
+    std::cout << '(' << (int)color.r << ", " << (int)color.g << ", "
+              << (int)color.b << ')' << '\n';
+
+    return true;
   }
 
   void printAllColors() {
