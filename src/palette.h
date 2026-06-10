@@ -14,6 +14,8 @@ class Palette {
 public:
   Palette() : m_colors{} {}
 
+  Palette(const Palette &palette) : m_colors{palette.m_colors} {}
+
   void addColor(const std::uint8_t &r, const uint8_t &g, const uint8_t &b) {
     m_colors.push_back({r, g, b});
   }
