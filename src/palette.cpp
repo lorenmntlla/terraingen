@@ -24,8 +24,7 @@ Palette::Palette(const std::vector<Color> &colors) : m_colors{colors} {}
 
 void Palette::addColor(const Color &color) { m_colors.push_back(color); }
 
-void Palette::addColor(const channel_t &r, const channel_t &g,
-                       const channel_t &b) {
+void Palette::addColor(channel_t r, channel_t g, channel_t b) {
   m_colors.push_back(Color{r, g, b});
 }
 

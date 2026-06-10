@@ -21,7 +21,7 @@ public:
 
   void addColor(const Color &color);
 
-  void addColor(const channel_t &r, const channel_t &g, const channel_t &b);
+  void addColor(channel_t r, channel_t g, channel_t b);
 
   void addColor(std::string_view hex);
 
