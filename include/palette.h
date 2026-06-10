@@ -33,20 +33,20 @@ public:
     m_colors.push_back(Color{r, g, b});
   }
 
-  void addColor(std::string_view color_hex) {
-    if (color_hex.front() == '#')
-      color_hex.remove_prefix(1);
+  void addColor(std::string_view hex) {
+    if (hex.front() == '#')
+      hex.remove_prefix(1);
 
     // TODO: throw exception instead of silently failing
-    if (color_hex.size() != 6)
+    if (hex.size() != 6)
       return;
 
-    uint8_t red = static_cast<uint8_t>(
-        std::stoi(std::string{color_hex[0], color_hex[1]}, 0, 16));
-    uint8_t green = static_cast<uint8_t>(
-        std::stoi(std::string{color_hex[2], color_hex[3]}, 0, 16));
-    uint8_t blue = static_cast<uint8_t>(
-        std::stoi(std::string{color_hex[4], color_hex[5]}, 0, 16));
+    uint8_t red =
+        static_cast<uint8_t>(std::stoi(std::string{hex[0], hex[1]}, 0, 16));
+    uint8_t green =
+        static_cast<uint8_t>(std::stoi(std::string{hex[2], hex[3]}, 0, 16));
+    uint8_t blue =
+        static_cast<uint8_t>(std::stoi(std::string{hex[4], hex[5]}, 0, 16));
 
     m_colors.push_back(Color{red, green, blue});
   }
