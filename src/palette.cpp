@@ -4,8 +4,6 @@
 
 Palette::Palette() : m_colors{} {}
 
-Palette::Palette(const Palette &palette) : m_colors{palette.m_colors} {}
-
 Palette::Palette(std::ifstream &file) : m_colors{} {
   std::string hex{};
 
@@ -19,6 +17,8 @@ uint8_t Palette::parseChannel(std::string_view sv) const {
 
   return channel;
 }
+
+Palette::Palette(const Palette &palette) : m_colors{palette.m_colors} {}
 
 void Palette::addColor(const Color &color) { m_colors.push_back(color); }
 
