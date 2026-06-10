@@ -16,6 +16,13 @@ class Palette {
 public:
   Palette() : m_colors{} {}
 
+  Palette(std::ifstream &file) : m_colors{} {
+    std::string color_hex{};
+
+    while (std::getline(file, color_hex))
+      addColor(color_hex);
+  }
+
   Palette(const Palette &palette) : m_colors{palette.m_colors} {}
 
   void addColor(const std::uint8_t &r, const uint8_t &g, const uint8_t &b) {
