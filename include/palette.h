@@ -39,6 +39,7 @@ public:
     if (color_hex.front() == '#')
       color_hex.remove_prefix(1);
 
+    // TODO: throw exception instead of silently failing
     if (color_hex.size() != 6)
       return;
 
