@@ -34,8 +34,6 @@ public:
   }
 
   void addColor(std::string_view color_hex) {
-    Color color{};
-
     if (color_hex.front() == '#')
       color_hex.remove_prefix(1);
 
@@ -43,20 +41,14 @@ public:
     if (color_hex.size() != 6)
       return;
 
-    for (size_t i{0}; i < color_hex.size() - 1; i += 2) {
-      std::string color_digit{color_hex[i], color_hex[i + 1]};
+    uint8_t red = static_cast<uint8_t>(
+        std::stoi(std::string{color_hex[0], color_hex[1]}, 0, 16));
+    uint8_t green = static_cast<uint8_t>(
+        std::stoi(std::string{color_hex[2], color_hex[3]}, 0, 16));
+    uint8_t blue = static_cast<uint8_t>(
+        std::stoi(std::string{color_hex[4], color_hex[5]}, 0, 16));
 
-      if (i == 0)
-        color.r = static_cast<std::uint8_t>(std::stoi(color_digit, 0, 16));
-
-      if (i == 2)
-        color.g = static_cast<std::uint8_t>(std::stoi(color_digit, 0, 16));
-
-      if (i == 4)
-        color.b = static_cast<std::uint8_t>(std::stoi(color_digit, 0, 16));
-    }
-
-    m_colors.push_back(color);
+    m_colors.push_back(Color{red, green, blue});
   }
 
   size_t getColorQuantity() const { return m_colors.size(); }
