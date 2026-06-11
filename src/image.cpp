@@ -11,6 +11,10 @@ Color Image::getPixel(dimension_t x, dimension_t y) const {
   return m_pixels[y * m_length + x];
 }
 
+dimension_t Image::length() const { return m_length; }
+
+dimension_t Image::height() const { return m_height; }
+
 void Image::savePPM(const std::string &fileName) const {
   std::ofstream PPM{fileName + ".ppm"};
 
