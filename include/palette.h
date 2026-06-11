@@ -27,9 +27,9 @@ public:
 
   size_t getColorQuantity() const;
 
-  std::optional<Color> getColor(size_t i = 0) const;
+  std::optional<Color> getColor(size_t i) const;
 
-  bool printColor(size_t i = 0) const;
+  bool printColor(size_t i) const;
 
   void printAllColors() const;
 };
