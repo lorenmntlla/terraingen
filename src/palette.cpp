@@ -1,6 +1,7 @@
 #include "../include/palette.h"
 #include <charconv>
 #include <iostream>
+#include <stdexcept>
 
 Palette::Palette() : m_colors{} {}
 
@@ -30,14 +31,13 @@ void Palette::addColor(channel_t r, channel_t g, channel_t b) {
 
 void Palette::addColor(std::string_view hex) {
   if (hex.empty())
-    return;
+    throw std::invalid_argument("String is empty.");
 
   if (hex.front() == '#')
     hex.remove_prefix(1);
 
-  // TODO: throw exception instead of silently failing
   if (hex.size() != 6)
-    return;
+    throw std::invalid_argument("Hexadecimal must have exactly 6 digits.");
 
   channel_t red = parseChannel(hex.substr(0, 2));
   channel_t green = parseChannel(hex.substr(2, 2));
@@ -58,7 +58,7 @@ std::optional<Color> Palette::getColor(size_t i) const {
 bool Palette::printColor(size_t i) const {
   std::optional<Color> maybe_color{Palette::getColor(i)};
   if (!maybe_color) {
-    std::cerr << "Color " << i << " not in palette\n";
+    std::cerr << "Color " << i << " not in palette.\n";
     return false;
   }
 
