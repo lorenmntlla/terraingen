@@ -13,7 +13,7 @@ class Palette {
 public:
   Palette();
 
-  Palette(std::ifstream &file);
+  Palette(const std::string &fileName);
 
   Palette(const Palette &palette);
 

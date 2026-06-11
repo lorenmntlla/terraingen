@@ -1,14 +1,19 @@
 #include "../include/palette.h"
 #include <charconv>
+#include <fstream>
 #include <iostream>
 
 Palette::Palette() : m_colors{} {}
 
-Palette::Palette(std::ifstream &file) : m_colors{} {
+Palette::Palette(const std::string &fileName) : m_colors{} {
+  std::ifstream file{fileName};
+
   std::string hex{};
 
   while (std::getline(file, hex))
     addColor(hex);
+
+  file.close();
 }
 
 channel_t Palette::parseChannel(std::string_view sv) const {

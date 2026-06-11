@@ -1,14 +1,35 @@
 #include "../include/image.h"
-#include "../include/palette.h"
 
 int main() {
-  Image test{10, 15};
-  Palette storage;
+  Image img{1920, 1200};
 
-  storage.addColor(test.getPixel(4, 5));
-  storage.printColor(0);
+  Palette sunset("sunset_flag.hex");
 
-  test.setPixel(4, 5, {0, 128, 0});
-  storage.addColor(test.getPixel(4, 5));
-  storage.printColor(1);
+  Palette trans("trans_flag.hex");
+
+  for (size_t i{0}; i < 1920; i++) {
+    for (size_t j{0}; j < 240; j++) {
+      img.setPixel(i, j, *sunset.getColor(0));
+      img.setPixel(i, j + 240, *sunset.getColor(1));
+      img.setPixel(i, j + 480, *sunset.getColor(2));
+      img.setPixel(i, j + 720, *sunset.getColor(3));
+      img.setPixel(i, j + 960, *sunset.getColor(4));
+    }
+  }
+
+  img.savePPM("sunset");
+
+  for (size_t i{0}; i < 1920; i++) {
+    for (size_t j{0}; j < 240; j++) {
+      img.setPixel(i, j, *trans.getColor(0));
+      img.setPixel(i, j + 240, *trans.getColor(1));
+      img.setPixel(i, j + 480, *trans.getColor(2));
+      img.setPixel(i, j + 720, *trans.getColor(3));
+      img.setPixel(i, j + 960, *trans.getColor(4));
+    }
+  }
+
+  img.savePPM("trans");
+
+  return 0;
 }
