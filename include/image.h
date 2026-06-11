@@ -9,7 +9,7 @@ class Image {
   dimension_t m_length;
   dimension_t m_height;
 
-  std::vector<std::vector<Color>> m_pixels;
+  Color *m_pixels;
 
 public:
   Image(dimension_t length, dimension_t height);
