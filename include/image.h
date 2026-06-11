@@ -16,9 +16,11 @@ public:
 
   Image(std::ifstream &file);
 
-  Color getPixel(dimension_t line, dimension_t column);
+  Color getPixel(dimension_t x, dimension_t y) const;
 
-  void savePPM(std::string file);
+  void savePPM(std::string file) const;
+
+  void setPixel(dimension_t x, dimension_t y, const Color &color);
 
   ~Image();
 };
