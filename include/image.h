@@ -2,6 +2,7 @@
 #include "color.h"
 #include "palette.h"
 #include <fstream>
+#include <string>
 #include <vector>
 
 typedef unsigned int dimension_t;
@@ -15,7 +16,7 @@ class Image {
 public:
   Image(dimension_t length, dimension_t height);
 
-  Image(std::ifstream &file);
+  Image(const std::string &fileName);
 
   dimension_t length() const;
 
