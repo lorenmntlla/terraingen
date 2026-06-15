@@ -11,8 +11,11 @@ Palette::Palette(const std::string &fileName) : m_colors{} {
 
   std::string hex{};
 
-  while (std::getline(file, hex))
-    addColor(hex);
+  while (std::getline(file, hex)) {
+    for (size_t pos{hex.find('#')}; pos != std::string::npos;
+         pos = hex.find('#', pos + 1))
+      addColor(hex.substr(pos + 1, 6));
+  }
 
   file.close();
 }
