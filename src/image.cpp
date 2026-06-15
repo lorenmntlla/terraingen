@@ -15,6 +15,8 @@ dimension_t Image::length() const { return m_length; }
 
 dimension_t Image::height() const { return m_height; }
 
+Color *Image::data() const { return m_pixels; }
+
 void Image::savePPM(const std::string &fileName) const {
   std::ofstream PPM{fileName + ".ppm"};
 
