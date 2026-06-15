@@ -24,7 +24,7 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 # The -MMD and -MP flags together generate Makefiles for us!
 # These files will have .d instead of .o as the output.
-CPPFLAGS := $(INC_FLAGS) -MMD -MP
+CPPFLAGS := $(INC_FLAGS) -pipe -Wall -Wextra -Wconversion -pedantic -Wfatal-errors -std=c++23 -O0 -g3 -MMD -MP
 
 # The final build step.
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
@@ -41,9 +41,10 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 
-.PHONY: clean
+.PHONY:
 clean:
 	rm -r $(BUILD_DIR)
+	rm *.ppm
 
 # Include the .d makefiles. The - at the front suppresses the errors of missing
 # Makefiles. Initially, all the .d files will be missing, and we don't want those
