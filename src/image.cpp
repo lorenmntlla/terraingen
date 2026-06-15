@@ -1,6 +1,6 @@
 #include "../include/image.h"
-#include <cstddef>
 #include <fstream>
+#include <string>
 
 Image::Image(dimension_t length, dimension_t height)
     : m_length{length}, m_height{height}, m_pixels{nullptr} {
