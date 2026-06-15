@@ -43,6 +43,6 @@ void Image::setPixel(dimension_t x, dimension_t y, const Color &color) {
 }
 
 Image::~Image() {
-  delete m_pixels;
+  delete[] m_pixels;
   m_pixels = nullptr;
 }
