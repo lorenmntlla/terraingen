@@ -18,13 +18,18 @@ dimension_t Image::height() const { return m_height; }
 Color *Image::data() const { return m_pixels; }
 
 void Image::savePPM(const std::string &fileName) const {
-  std::ofstream PPM{fileName + ".ppm"};
+  if (m_pixels == nullptr)
+    return;
+
+  std::ofstream PPM{fileName};
 
   PPM << "P3\n";
   PPM << m_length << ' ' << m_height << '\n';
   PPM << 255 << '\n';
 
-  for (size_t pixel{0}; pixel < m_length * m_height; pixel++) {
+  size_t pixelTotal{m_length * m_height};
+
+  for (size_t pixel{0}; pixel < pixelTotal; pixel++) {
     const auto [red, green, blue] = m_pixels[pixel];
 
     PPM << (int)red << ' ' << (int)green << ' ' << (int)blue << ' ';
