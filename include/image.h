@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-typedef unsigned int dimension_t;
+typedef long unsigned int dimension_t;
 
 class Image {
   dimension_t m_length;
