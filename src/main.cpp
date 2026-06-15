@@ -1,28 +1,54 @@
-#include "../include/palette.h"
-#include <iostream>
-#include <fstream>
+#include "../include/image.h"
+#include <cstddef>
+
+void drawStripes(Image &img, const Palette &palette) {
+  if (palette.size() == 0)
+    return;
+
+  const dimension_t width{img.length()};
+  const dimension_t height{img.height()};
+  const size_t numColors{palette.size()};
+  const dimension_t stripeHeight = height / numColors;
+
+  for (size_t color{0}; color < numColors; color++) {
+    const auto currentColor = *palette.getColor(color);
+
+    const dimension_t startY = color * stripeHeight;
+    const dimension_t endY =
+        (color == numColors - 1) ? height : startY + stripeHeight;
+
+    for (dimension_t y{startY}; y < endY; y++)
+      for (dimension_t x{0}; x < width; x++)
+        img.setPixel(x, y, currentColor);
+  }
+}
 
 int main() {
-  std::ifstream file{"colors"};
+  Image canvas{1920, 1080};
 
-  Palette palette{file};
+  Palette sunset{"sunset_flag.hex"};
 
-  Color magenta{255, 0, 255};
+  Palette trans{"trans_flag.hex"};
 
-  palette.addColor(magenta);
-  palette.addColor(0, 255, 0);
-  palette.addColor("#00FFFF");
-  palette.addColor("FF0000");
+  Palette pride{"palette_256.hex"};
 
-  std::cout << "Palette with " << palette.getColorQuantity() << " colors\n";
-  palette.printAllColors();
+  Palette non_binary{"non_binary.hex"};
 
-  std::cout << "Attempting to print color with index 14:\n";
-  bool get1{palette.printColor(14)};
+  drawStripes(canvas, sunset);
 
-  std::cout << "Attempting to print color with index 9:\n";
-  bool get2{palette.printColor(9)};
+  canvas.savePPM("sunset.ppm");
 
-  std::cout << get1 << '\t' << get2 << '\n';
+  drawStripes(canvas, trans);
+
+  canvas.savePPM("trans.ppm");
+
+  drawStripes(canvas, pride);
+
+  canvas.savePPM("pride.ppm");
+
+  drawStripes(canvas, non_binary);
+
+  canvas.savePPM("non_binary.ppm");
+
   return 0;
 }

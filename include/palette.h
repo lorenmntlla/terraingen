@@ -13,7 +13,7 @@ class Palette {
 public:
   Palette();
 
-  Palette(std::ifstream &file);
+  Palette(const std::string &fileName);
 
   Palette(const Palette &palette);
 
@@ -25,11 +25,7 @@ public:
 
   void addColor(std::string_view hex);
 
-  size_t getColorQuantity() const;
+  size_t size() const;
 
   std::optional<Color> getColor(size_t i) const;
-
-  bool printColor(size_t i) const;
-
-  void printAllColors() const;
 };
