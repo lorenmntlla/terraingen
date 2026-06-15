@@ -22,6 +22,8 @@ public:
 
   dimension_t height() const;
 
+  Color *data() const;
+
   Color getPixel(dimension_t x, dimension_t y) const;
 
   void savePPM(const std::string &fileName) const;
