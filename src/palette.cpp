@@ -1,7 +1,8 @@
 #include "../include/palette.h"
 #include <charconv>
 #include <fstream>
-#include <iostream>
+#include <string>
+#include <string_view>
 
 Palette::Palette() : m_colors{} {}
 
@@ -51,30 +52,11 @@ void Palette::addColor(std::string_view hex) {
   m_colors.push_back(Color{red, green, blue});
 }
 
-size_t Palette::getColorQuantity() const { return m_colors.size(); }
+size_t Palette::size() const { return m_colors.size(); }
 
 std::optional<Color> Palette::getColor(size_t i) const {
-  if (i >= getColorQuantity())
+  if (i >= size())
     return std::nullopt;
 
   return m_colors[i];
-}
-
-bool Palette::printColor(size_t i) const {
-  std::optional<Color> maybe_color{Palette::getColor(i)};
-  if (!maybe_color) {
-    std::cerr << "Color " << i << " not in palette\n";
-    return false;
-  }
-
-  const auto [r, g, b] = *maybe_color;
-
-  std::cout << '(' << (int)r << ", " << (int)g << ", " << (int)b << ')' << '\n';
-
-  return true;
-}
-
-void Palette::printAllColors() const {
-  for (size_t i{0}; i < Palette::getColorQuantity(); i++)
-    printColor(i);
 }

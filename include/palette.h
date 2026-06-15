@@ -25,11 +25,7 @@ public:
 
   void addColor(std::string_view hex);
 
-  size_t getColorQuantity() const;
+  size_t size() const;
 
   std::optional<Color> getColor(size_t i = 0) const;
-
-  bool printColor(size_t i = 0) const;
-
-  void printAllColors() const;
 };
