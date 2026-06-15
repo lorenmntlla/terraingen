@@ -1,35 +1,54 @@
 #include "../include/image.h"
+#include <cstddef>
+
+void drawStripes(Image &img, const Palette &palette) {
+  if (palette.size() == 0)
+    return;
+
+  const dimension_t width{img.length()};
+  const dimension_t height{img.height()};
+  const size_t numColors{palette.size()};
+  const dimension_t stripeHeight = height / numColors;
+
+  for (size_t color{0}; color < numColors; color++) {
+    const auto currentColor = *palette.getColor(color);
+
+    const dimension_t startY = color * stripeHeight;
+    const dimension_t endY =
+        (color == numColors - 1) ? height : startY + stripeHeight;
+
+    for (dimension_t y{startY}; y < endY; y++)
+      for (dimension_t x{0}; x < width; x++)
+        img.setPixel(x, y, currentColor);
+  }
+}
 
 int main() {
-  Image img{1920, 1200};
+  Image canvas{1920, 1080};
 
-  Palette sunset("sunset_flag.hex");
+  Palette sunset{"sunset_flag.hex"};
 
-  Palette trans("trans_flag.hex");
+  Palette trans{"trans_flag.hex"};
 
-  for (size_t i{0}; i < img.length(); i++) {
-    for (size_t j{0}; j < img.height() / 5; j++) {
-      img.setPixel(i, j, *sunset.getColor(0));
-      img.setPixel(i, j + img.height() / 5, *sunset.getColor(1));
-      img.setPixel(i, j + (img.height() / 5) * 2, *sunset.getColor(2));
-      img.setPixel(i, j + (img.height() / 5) * 3, *sunset.getColor(3));
-      img.setPixel(i, j + (img.height() / 5) * 4, *sunset.getColor(4));
-    }
-  }
+  Palette pride{"palette_256.hex"};
 
-  img.savePPM("sunset");
+  Palette non_binary{"non_binary.hex"};
 
-  for (size_t i{0}; i < img.length(); i++) {
-    for (size_t j{0}; j < img.height() / 5; j++) {
-      img.setPixel(i, j, *trans.getColor(0));
-      img.setPixel(i, j + img.height() / 5, *trans.getColor(1));
-      img.setPixel(i, j + (img.height() / 5) * 2, *trans.getColor(2));
-      img.setPixel(i, j + (img.height() / 5) * 3, *trans.getColor(3));
-      img.setPixel(i, j + (img.height() / 5) * 4, *trans.getColor(4));
-    }
-  }
+  drawStripes(canvas, sunset);
 
-  img.savePPM("trans");
+  canvas.savePPM("sunset.ppm");
+
+  drawStripes(canvas, trans);
+
+  canvas.savePPM("trans.ppm");
+
+  drawStripes(canvas, pride);
+
+  canvas.savePPM("pride.ppm");
+
+  drawStripes(canvas, non_binary);
+
+  canvas.savePPM("non_binary.ppm");
 
   return 0;
 }
