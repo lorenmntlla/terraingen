@@ -4,11 +4,11 @@
 #include <string>
 #include <string_view>
 
-channel_t Image::parseChannel(std::string_view sv) const {
-  channel_t channel{};
-  std::from_chars(sv.data(), sv.data() + sv.size(), channel);
+dimension_t Image::parseNumber(std::string_view sv) const {
+  dimension_t decimal{};
+  std::from_chars(sv.data(), sv.data() + sv.size(), decimal);
 
-  return channel;
+  return decimal;
 }
 
 Image::Image(dimension_t length, dimension_t height)
@@ -56,8 +56,7 @@ bool Image::readPPM(const std::string &fileName) {
   std::ifstream PPM{fileName};
 
   if (!PPM)
-    // throw std::system_error(errno, std::generic_category(), fileName);
-    return false;
+    throw std::system_error(errno, std::generic_category(), fileName);
 
   std::string current;
 
@@ -66,10 +65,10 @@ bool Image::readPPM(const std::string &fileName) {
     return false;
 
   PPM >> current;
-  m_length = stoi(current);
+  m_length = parseNumber(current);
 
   PPM >> current;
-  m_height = stoi(current);
+  m_height = parseNumber(current);
 
   PPM >> current;
   if (current != "255")
@@ -84,9 +83,9 @@ bool Image::readPPM(const std::string &fileName) {
 
     PPM >> red >> green >> blue;
 
-    channel_t r = parseChannel(red);
-    channel_t g = parseChannel(green);
-    channel_t b = parseChannel(blue);
+    channel_t r = (channel_t)parseNumber(red);
+    channel_t g = (channel_t)parseNumber(green);
+    channel_t b = (channel_t)parseNumber(blue);
 
     m_pixels[p] = {r, g, b};
   }

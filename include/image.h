@@ -14,7 +14,7 @@ class Image {
 
   Color *m_pixels;
 
-  channel_t parseChannel(std::string_view sv) const;
+  dimension_t parseNumber(std::string_view sv) const;
 
 public:
   Image(dimension_t length = 0, dimension_t height = 0);
