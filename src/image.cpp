@@ -1,6 +1,15 @@
 #include "../include/image.h"
+#include <charconv>
 #include <fstream>
 #include <string>
+#include <string_view>
+
+channel_t Image::parseChannel(std::string_view sv) const {
+  channel_t channel{};
+  std::from_chars(sv.data(), sv.data() + sv.size(), channel);
+
+  return channel;
+}
 
 Image::Image(dimension_t length, dimension_t height)
     : m_length{length}, m_height{height},
@@ -41,6 +50,48 @@ bool Image::savePPM(const std::string &fileName) const {
 
 Color &Image::operator()(dimension_t x, dimension_t y) {
   return m_pixels[y * m_length + x];
+}
+
+bool Image::readPPM(const std::string &fileName) {
+  std::ifstream PPM{fileName};
+
+  if (!PPM)
+    // throw std::system_error(errno, std::generic_category(), fileName);
+    return false;
+
+  std::string current;
+
+  PPM >> current;
+  if (current != "P3")
+    return false;
+
+  PPM >> current;
+  m_length = stoi(current);
+
+  PPM >> current;
+  m_height = stoi(current);
+
+  PPM >> current;
+  if (current != "255")
+    return false;
+
+  delete[] m_pixels;
+  m_pixels = new Color[m_length * m_height]();
+
+  const dimension_t pixelTotal{m_length * m_height};
+  for (dimension_t p{0}; p < pixelTotal; p++) {
+    std::string red, green, blue;
+
+    PPM >> red >> green >> blue;
+
+    channel_t r = parseChannel(red);
+    channel_t g = parseChannel(green);
+    channel_t b = parseChannel(blue);
+
+    m_pixels[p] = {r, g, b};
+  }
+
+  return true;
 }
 
 void Image::setPixel(dimension_t x, dimension_t y, const Color &color) {

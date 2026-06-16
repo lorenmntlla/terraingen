@@ -3,6 +3,7 @@
 #include "palette.h"
 #include <fstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 typedef long unsigned int dimension_t;
@@ -12,6 +13,8 @@ class Image {
   dimension_t m_height;
 
   Color *m_pixels;
+
+  channel_t parseChannel(std::string_view sv) const;
 
 public:
   Image(dimension_t length = 0, dimension_t height = 0);
@@ -33,6 +36,8 @@ public:
   Color &operator()(dimension_t x, dimension_t y);
 
   void setPixel(dimension_t x, dimension_t y, const Color &color);
+
+  bool readPPM(const std::string &fileName);
 
   ~Image();
 };
