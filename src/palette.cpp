@@ -4,11 +4,15 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <system_error>
 
 Palette::Palette() : m_colors{} {}
 
 Palette::Palette(const std::string &fileName) : m_colors{} {
   std::ifstream file{fileName};
+
+  if (!file)
+    throw std::system_error(errno, std::generic_category(), fileName);
 
   std::string hex{};
 
