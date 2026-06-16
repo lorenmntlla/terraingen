@@ -1,10 +1,7 @@
 #pragma once
 #include "color.h"
-#include "palette.h"
-#include <fstream>
 #include <string>
 #include <string_view>
-#include <vector>
 
 typedef long unsigned int dimension_t;
 

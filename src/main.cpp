@@ -1,4 +1,5 @@
 #include "../include/image.h"
+#include "../include/palette.h"
 
 void drawStripes(Image &img, const Palette &palette) {
   if (palette.size() == 0)

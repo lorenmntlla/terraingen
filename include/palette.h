@@ -1,6 +1,5 @@
 #pragma once
 #include "color.h"
-#include <fstream>
 #include <optional>
 #include <string_view>
 #include <vector>
