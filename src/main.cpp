@@ -1,5 +1,4 @@
 #include "../include/image.h"
-#include <cstddef>
 
 void drawStripes(Image &img, const Palette &palette) {
   if (palette.size() == 0)
@@ -24,7 +23,7 @@ void drawStripes(Image &img, const Palette &palette) {
 }
 
 int main() {
-  Image canvas{1920, 1080};
+  Image canvas{1920, 1200};
 
   canvas.savePPM("canvas.ppm");
 
