@@ -18,7 +18,7 @@ public:
 
   Image(const std::string &fileName);
 
-  Color operator()(dimension_t x, dimension_t y) const;
+  Color &operator()(dimension_t x, dimension_t y) const;
 
   dimension_t length() const;
 
@@ -29,6 +29,8 @@ public:
   Color getPixel(dimension_t x, dimension_t y) const;
 
   bool savePPM(const std::string &fileName) const;
+
+  Color &operator()(dimension_t x, dimension_t y);
 
   void setPixel(dimension_t x, dimension_t y, const Color &color);
 

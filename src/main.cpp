@@ -19,7 +19,7 @@ void drawStripes(Image &img, const Palette &palette) {
 
     for (dimension_t y{startY}; y < endY; y++)
       for (dimension_t x{0}; x < width; x++)
-        img.setPixel(x, y, currentColor);
+        img(x, y) = currentColor;
   }
 }
 

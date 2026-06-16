@@ -7,7 +7,7 @@ Image::Image(dimension_t length, dimension_t height)
       m_pixels{(length > 0 and height > 0) ? new Color[m_length * m_height]()
                                            : nullptr} {}
 
-Color Image::operator()(dimension_t x, dimension_t y) const {
+Color &Image::operator()(dimension_t x, dimension_t y) const {
   return m_pixels[y * m_length + x];
 }
 
@@ -37,6 +37,10 @@ bool Image::savePPM(const std::string &fileName) const {
   }
 
   return true;
+}
+
+Color &Image::operator()(dimension_t x, dimension_t y) {
+  return m_pixels[y * m_length + x];
 }
 
 void Image::setPixel(dimension_t x, dimension_t y, const Color &color) {
