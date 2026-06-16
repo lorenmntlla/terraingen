@@ -3,8 +3,9 @@
 #include <string>
 
 Image::Image(dimension_t length, dimension_t height)
-    : m_length{length}, m_height{height}, m_pixels{nullptr} {
-  m_pixels = new Color[m_length * m_height]{Color{0, 0, 0}};
+    : m_length{length}, m_height{height},
+      m_pixels{(length > 0 and height > 0) ? new Color[m_length * m_height]()
+                                           : nullptr} {}
 }
 
 Color Image::getPixel(dimension_t x, dimension_t y) const {
