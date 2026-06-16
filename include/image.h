@@ -28,7 +28,7 @@ public:
 
   Color getPixel(dimension_t x, dimension_t y) const;
 
-  void savePPM(const std::string &fileName) const;
+  bool savePPM(const std::string &fileName) const;
 
   void setPixel(dimension_t x, dimension_t y, const Color &color);
 
