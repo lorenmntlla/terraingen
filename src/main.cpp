@@ -26,6 +26,8 @@ void drawStripes(Image &img, const Palette &palette) {
 int main() {
   Image canvas{1920, 1080};
 
+  canvas.savePPM("canvas.ppm");
+
   Palette sunset{"sunset_flag.hex"};
 
   Palette trans{"trans_flag.hex"};
