@@ -14,7 +14,7 @@ class Image {
   Color *m_pixels;
 
 public:
-  Image(dimension_t length, dimension_t height);
+  Image(dimension_t length = 0, dimension_t height = 0);
 
   Image(const std::string &fileName);
 
