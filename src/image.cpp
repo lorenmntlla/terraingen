@@ -37,7 +37,7 @@ bool Image::savePPM(const std::string &fileName) const {
   PPM << m_length << ' ' << m_height << '\n';
   PPM << 255 << '\n';
 
-  dimension_t pixelTotal{m_length * m_height};
+  const dimension_t pixelTotal{m_length * m_height};
 
   for (dimension_t pixel{0}; pixel < pixelTotal; pixel++) {
     const auto [red, green, blue] = m_pixels[pixel];
