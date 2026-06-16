@@ -18,6 +18,8 @@ public:
 
   Image(const std::string &fileName);
 
+  Color operator()(dimension_t x, dimension_t y) const;
+
   dimension_t length() const;
 
   dimension_t height() const;

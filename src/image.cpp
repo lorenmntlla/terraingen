@@ -6,6 +6,9 @@ Image::Image(dimension_t length, dimension_t height)
     : m_length{length}, m_height{height},
       m_pixels{(length > 0 and height > 0) ? new Color[m_length * m_height]()
                                            : nullptr} {}
+
+Color Image::operator()(dimension_t x, dimension_t y) const {
+  return m_pixels[y * m_length + x];
 }
 
 Color Image::getPixel(dimension_t x, dimension_t y) const {
