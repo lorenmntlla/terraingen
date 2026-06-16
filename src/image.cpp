@@ -18,10 +18,7 @@ dimension_t Image::height() const { return m_height; }
 Color *Image::data() const { return m_pixels; }
 
 void Image::savePPM(const std::string &fileName) const {
-  if (m_pixels == nullptr)
-    return;
-
-  std::ofstream PPM{fileName};
+  std::ofstream PPM{fileName, std::ios::trunc | std::ios::out};
 
   PPM << "P3\n";
   PPM << m_length << ' ' << m_height << '\n';
@@ -34,8 +31,6 @@ void Image::savePPM(const std::string &fileName) const {
 
     PPM << (int)red << ' ' << (int)green << ' ' << (int)blue << ' ';
   }
-
-  PPM.close();
 }
 
 void Image::setPixel(dimension_t x, dimension_t y, const Color &color) {

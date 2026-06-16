@@ -21,8 +21,6 @@ Palette::Palette(const std::string &fileName) : m_colors{} {
          pos = hex.find('#', pos + 1))
       addColor(hex.substr(pos + 1, 6));
   }
-
-  file.close();
 }
 
 channel_t Palette::parseChannel(std::string_view sv) const {
