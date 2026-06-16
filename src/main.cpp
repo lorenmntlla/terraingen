@@ -25,13 +25,13 @@ void drawStripes(Image &img, const Palette &palette) {
 int main() {
   Image canvas{1920, 1200};
 
-  canvas.savePPM("canvas.ppm");
-
   Palette sunset{"sunset_flag.hex"};
+
+  Palette gay{"gay_flag.hex"};
 
   Palette trans{"trans_flag.hex"};
 
-  Palette pride{"palette_256.hex"};
+  Palette pride{"pride.hex"};
 
   Palette non_binary{"non_binary.hex"};
 
@@ -50,6 +50,10 @@ int main() {
   drawStripes(canvas, non_binary);
 
   canvas.savePPM("non_binary.ppm");
+
+  drawStripes(canvas, gay);
+
+  canvas.savePPM("gay_flag.ppm");
 
   return 0;
 }
