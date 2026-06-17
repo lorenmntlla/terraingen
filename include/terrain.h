@@ -13,6 +13,8 @@ class Terrain {
 public:
   Terrain(dimension_t side = 3);
 
+  dimension_t side() const;
+
   dimension_t lines() const;
 
   dimension_t columns() const;
