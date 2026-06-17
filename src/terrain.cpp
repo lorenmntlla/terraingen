@@ -11,6 +11,10 @@ Terrain::Terrain(dimension_t side)
         "Terrain must have an odd side greater than 1");
 }
 
+dimension_t Terrain::side() const { return m_side; }
+dimension_t Terrain::lines() const { return m_side; }
+dimension_t Terrain::columns() const { return m_side; }
+
 Terrain::~Terrain() {
   delete[] m_terrain;
   m_terrain = nullptr;
