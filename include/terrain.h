@@ -1,0 +1,31 @@
+#pragma once
+#include "dimension.h"
+#include <string>
+
+typedef unsigned int altitude_t;
+
+class Terrain {
+  dimension_t m_side;
+  double m_rugosity;
+
+  altitude_t *m_terrain;
+
+public:
+  Terrain(dimension_t side = 3);
+
+  dimension_t lines() const;
+
+  dimension_t columns() const;
+
+  altitude_t &operator()(dimension_t x, dimension_t y) const;
+
+  bool saveFile(const std::string &fileName) const;
+
+  bool generate(dimension_t side, double rugosity);
+
+  altitude_t &operator()(dimension_t x, dimension_t y);
+
+  bool readFile(const std::string &fileName);
+
+  ~Terrain();
+};
