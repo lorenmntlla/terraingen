@@ -15,9 +15,3 @@ Alternatively, add `-DCMAKE_BUILD_TYPE=Release` for the Release compiler flags w
 ```
 cmake --build build
 ```
-
-## Installing
-```
-cmake --install
-```
-Add `--config Release` if using Ninja Multi-Config.
