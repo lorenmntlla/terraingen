@@ -15,6 +15,14 @@ dimension_t Terrain::side() const { return m_side; }
 dimension_t Terrain::lines() const { return m_side; }
 dimension_t Terrain::columns() const { return m_side; }
 
+altitude_t &Terrain::operator()(dimension_t x, dimension_t y) const {
+  return m_terrain[y * m_side + x];
+}
+
+altitude_t &Terrain::operator()(dimension_t x, dimension_t y) {
+  return m_terrain[y * m_side + x];
+}
+
 Terrain::~Terrain() {
   delete[] m_terrain;
   m_terrain = nullptr;
