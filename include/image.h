@@ -1,9 +1,8 @@
 #pragma once
 #include "color.h"
+#include "dimension.h"
 #include <string>
 #include <string_view>
-
-typedef long unsigned int dimension_t;
 
 class Image {
   dimension_t m_length;

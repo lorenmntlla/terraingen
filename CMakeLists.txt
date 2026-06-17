@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 add_library(palette src/palette.cpp include/palette.h include/color.h)
 target_compile_options(palette PRIVATE ${COMPILE_OPTIONS})
 
-add_library(image src/image.cpp include/image.h include/color.h)
+add_library(image src/image.cpp include/image.h include/color.h include/dimension.h)
 target_compile_options(image PRIVATE ${COMPILE_OPTIONS})
 
 add_executable(${APP_NAME} src/main.cpp)
