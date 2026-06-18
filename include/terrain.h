@@ -10,6 +10,8 @@ class Terrain {
 
   altitude_t *m_terrain;
 
+  bool isPowOfTwo(dimension_t a);
+
 public:
   Terrain(dimension_t side = 3);
 
