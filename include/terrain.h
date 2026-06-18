@@ -1,8 +1,9 @@
 #pragma once
 #include "dimension.h"
+#include <cstdint>
 #include <string>
 
-typedef unsigned int altitude_t;
+typedef uint8_t altitude_t;
 
 class Terrain {
   dimension_t m_side;
