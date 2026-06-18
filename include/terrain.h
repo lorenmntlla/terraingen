@@ -7,7 +7,7 @@ typedef uint8_t altitude_t;
 
 class Terrain {
   dimension_t m_side;
-  double m_rugosity;
+  float m_rugosity;
 
   altitude_t *m_terrain;
 
@@ -26,7 +26,7 @@ public:
 
   bool saveFile(const std::string &fileName) const;
 
-  bool generate(dimension_t side, double rugosity);
+  bool generate(dimension_t side, float rugosity);
 
   altitude_t &operator()(dimension_t x, dimension_t y);
 
