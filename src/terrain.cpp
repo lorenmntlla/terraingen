@@ -6,9 +6,7 @@ bool Terrain::isPowOfTwo(dimension_t a) { return ((a & a - 1) == 0); }
 
 Terrain::Terrain(dimension_t side)
     : m_side{(side > 1 and isPowOfTwo(side - 1)) ? side : 0}, m_rugosity{},
-      m_terrain{(m_side > 1 and m_side % 2 == 1)
-                    ? new altitude_t[m_side * m_side]()
-                    : nullptr} {
+      m_terrain{(m_side == 0) ? nullptr : new altitude_t[m_side * m_side]()} {
   if (m_side == 0)
     throw std::invalid_argument(
         "Terrain dimension must be (2^n) + 1. Received: " +
