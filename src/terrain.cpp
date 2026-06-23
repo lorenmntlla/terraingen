@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <string>
 
-bool Terrain::isPowOfTwo(dimension_t a) { return ((a & a - 1) == 0); }
+bool Terrain::isPowOfTwo(dimension_t a) { return ((a & (a - 1)) == 0); }
 
 Terrain::Terrain(dimension_t side)
     : m_side{(side > 1 and isPowOfTwo(side - 1)) ? side : 0}, m_rugosity{},
