@@ -9,7 +9,7 @@ class Terrain {
   dimension_t m_side;
   float m_rugosity;
 
-  altitude_t *m_terrain;
+  altitude_t *m_heightmap;
 
   bool isPowOfTwo(dimension_t a);
 
