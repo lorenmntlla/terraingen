@@ -9,7 +9,7 @@ altitude_t *Terrain::data() { return m_heightmap; }
 bool Terrain::isPowOfTwo(dimension_t a) const { return ((a & (a - 1)) == 0); }
 
 altitude_t Terrain::random() {
-  std::uniform_int_distribution<altitude_t> dist{(int8_t)-m_range, m_range};
+  std::uniform_int_distribution<altitude_t> dist{(altitude_t)-m_range, m_range};
 
   return dist(m_generator);
 }
