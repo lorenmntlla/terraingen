@@ -45,7 +45,7 @@ void Terrain::square(dimension_t boundary, dimension_t dx, dimension_t dy) {
   *right = (upperRight + bottomRight + center) / 3 + random();
   *bottom = (bottomLeft + bottomRight + center) / 3 + random();
 
-  m_range *= (altitude_t)std::pow(2, -m_rugosity);
+  m_range = (altitude_t)(m_range * std::pow(2, -m_rugosity));
 
   if (boundary > 1) {
     diamond(boundary - 2, dx, dy);
