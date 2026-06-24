@@ -23,6 +23,7 @@ void Terrain::diamond(dimension_t boundary, dimension_t dx, dimension_t dy) {
   altitude_t *center{&operator()((boundary / 2) + dx, (boundary / 2) + dy)};
 
   *center = (upperLeft + upperRight + bottomLeft + bottomRight) / 4 + random();
+
   square(boundary, dx, dy);
 }
 
