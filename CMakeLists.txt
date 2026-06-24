@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.31...4.3)
 
-project(terraingen VERSION 0.2.0 LANGUAGES CXX)
+project(terraingen VERSION 0.3.0 LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(APP_NAME "terraingen")
