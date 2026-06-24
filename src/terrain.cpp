@@ -14,47 +14,6 @@ altitude_t Terrain::random() {
   return dist(m_generator);
 }
 
-void Terrain::diamond(dimension_t boundary, dimension_t dx, dimension_t dy) {
-  const altitude_t upperLeft{operator()(dx, dy)};
-  const altitude_t upperRight{operator()(dx, boundary + dy)};
-  const altitude_t bottomLeft{operator()(boundary + dx, dy)};
-  const altitude_t bottomRight{operator()(boundary + dx, boundary + dy)};
-
-  altitude_t *center{&operator()((boundary / 2) + dx, (boundary / 2) + dy)};
-
-  *center = (upperLeft + upperRight + bottomLeft + bottomRight) / 4 + random();
-
-  square(boundary, dx, dy);
-}
-
-void Terrain::square(dimension_t boundary, dimension_t dx, dimension_t dy) {
-  const altitude_t upperLeft{operator()(dx, dy)};
-  const altitude_t upperRight{operator()(dx, boundary + dy)};
-  const altitude_t bottomLeft{operator()(boundary + dx, dy)};
-  const altitude_t bottomRight{operator()(boundary + dx, boundary + dy)};
-  const altitude_t center{operator()((boundary / 2) + dx, (boundary / 2) + dy)};
-
-  altitude_t *left{&operator()(dx, (boundary / 2) + dy)};
-  altitude_t *top{&operator()((boundary / 2) + dx, dy)};
-  altitude_t *right{&operator()(boundary + dx, (boundary / 2) + dy)};
-  altitude_t *bottom{&operator()((boundary / 2) + dx, boundary + dy)};
-
-  // TODO: Consider square point out of border
-  *left = (upperLeft + bottomLeft + center) / 3 + random();
-  *top = (upperLeft + upperRight + center) / 3 + random();
-  *right = (upperRight + bottomRight + center) / 3 + random();
-  *bottom = (bottomLeft + bottomRight + center) / 3 + random();
-
-  m_range = (altitude_t)(m_range * std::pow(2, -m_rugosity));
-
-  if (boundary > 1) {
-    diamond(boundary - 2, dx, dy);
-    diamond(boundary - 2, dx + 2, dy);
-    diamond(boundary - 2, dx, dy + 2);
-    diamond(boundary - 2, dx + 2, dy + 2);
-  }
-}
-
 Terrain::Terrain(dimension_t side)
     : m_side{(side > 1 and isPowOfTwo(side - 1)) ? side : 0}, m_rugosity{},
       m_range{INT8_MAX}, m_generator{std::mt19937{std::random_device{}()}},
@@ -83,9 +42,63 @@ bool Terrain::generate(double rugosity) {
   operator()(boundary, 0) = random();
   operator()(boundary, boundary) = random();
 
-  diamond(boundary);
+  diamondSquare();
 
   return true;
+}
+
+void Terrain::diamondSquare() {
+  const dimension_t boundary = m_side - 1;
+
+  for (dimension_t bound = boundary; bound > 1; bound /= 2) {
+    const dimension_t half = bound / 2;
+
+    // Diamond
+    for (dimension_t dy = 0; dy < boundary; dy += bound) {
+      for (dimension_t dx = 0; dx < boundary; dx += bound) {
+        const altitude_t upperLeft = operator()(dx, dy);
+        const altitude_t upperRight = operator()(dx + bound, dy);
+        const altitude_t bottomLeft = operator()(dx, dy + bound);
+        const altitude_t bottomRight = operator()(dx + bound, dy + bound);
+
+        altitude_t &center = operator()(dx + half, dy + half);
+        center =
+            (upperLeft + upperRight + bottomLeft + bottomRight) / 4 + random();
+      }
+    }
+
+    // Square
+    for (dimension_t dy = 0; dy <= boundary; dy += half) {
+      dimension_t dx_start = (dy % bound == 0) ? half : 0;
+
+      for (dimension_t dx = dx_start; dx <= boundary; dx += bound) {
+        altitude_t sum = 0;
+        altitude_t count = 0;
+
+        if (dy >= half) {
+          sum += operator()(dx, dy - half);
+          count++;
+        }
+        if (dy + half <= boundary) {
+          sum += operator()(dx, dy + half);
+          count++;
+        }
+        if (dx >= half) {
+          sum += operator()(dx - half, dy);
+          count++;
+        }
+        if (dx + half <= boundary) {
+          sum += operator()(dx + half, dy);
+          count++;
+        }
+
+        operator()(dx, dy) = (sum / count) + random();
+      }
+    }
+
+    // Apply rugosity
+    m_range = altitude_t(m_range * m_rugosity);
+  }
 }
 
 altitude_t &Terrain::operator()(dimension_t x, dimension_t y) {

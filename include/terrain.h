@@ -18,8 +18,7 @@ class Terrain {
   bool isPowOfTwo(dimension_t a) const;
 
   altitude_t random();
-  void diamond(dimension_t boundary, dimension_t dx = 0, dimension_t dy = 0);
-  void square(dimension_t boundary, dimension_t dx = 0, dimension_t dy = 0);
+  void diamondSquare();
 
 public:
   Terrain(dimension_t side = 3);
