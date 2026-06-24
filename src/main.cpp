@@ -1,60 +1,21 @@
-#include "../include/image.h"
-#include "../include/palette.h"
+#include "../include/terrain.h"
+#include "dimension.h"
+#include <iostream>
 
-void drawStripes(Image &img, const Palette &palette) {
-  if (palette.size() == 0)
-    return;
+int main(int argc, char **argv) {
+  dimension_t side = (dimension_t)atoi(argv[1]);
 
-  const dimension_t width{img.length()};
-  const dimension_t height{img.height()};
-  const size_t numColors{palette.size()};
-  const dimension_t stripeHeight = height / numColors;
+  Terrain terreno{side};
 
-  for (size_t color{0}; color < numColors; color++) {
-    const auto currentColor = *palette.getColor(color);
+  terreno.generate(atof(argv[2]));
 
-    const dimension_t startY = color * stripeHeight;
-    const dimension_t endY =
-        (color == numColors - 1) ? height : startY + stripeHeight;
+  for (dimension_t height{0}; height < side * side; height++) {
+    if (height % (side) == 0 and height != 0)
+      std::cout << '\n';
 
-    for (dimension_t y{startY}; y < endY; y++)
-      for (dimension_t x{0}; x < width; x++)
-        img(x, y) = currentColor;
+    std::cout << (int)terreno.data()[height] << '\t';
   }
-}
 
-int main() {
-  Image canvas{1920, 1200};
-
-  Palette sunset{"sunset_flag.hex"};
-
-  Palette gay{"gay_flag.hex"};
-
-  Palette trans{"trans_flag.hex"};
-
-  Palette pride{"pride.hex"};
-
-  Palette non_binary{"non_binary.hex"};
-
-  drawStripes(canvas, sunset);
-
-  canvas.savePPM("sunset.ppm");
-
-  drawStripes(canvas, trans);
-
-  canvas.savePPM("trans.ppm");
-
-  drawStripes(canvas, pride);
-
-  canvas.savePPM("pride.ppm");
-
-  drawStripes(canvas, non_binary);
-
-  canvas.savePPM("non_binary.ppm");
-
-  drawStripes(canvas, gay);
-
-  canvas.savePPM("gay_flag.ppm");
-
+  std::cout << '\n';
   return 0;
 }
