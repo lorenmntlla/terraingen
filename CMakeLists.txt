@@ -17,7 +17,10 @@ target_compile_options(palette PRIVATE ${COMPILE_OPTIONS})
 add_library(image src/image.cpp include/image.h include/color.h include/dimension.h)
 target_compile_options(image PRIVATE ${COMPILE_OPTIONS})
 
+add_library(terrain src/terrain.cpp include/terrain.h include/dimension.h)
+target_compile_options(terrain PRIVATE ${COMPILE_OPTIONS})
+
 add_executable(${APP_NAME} src/main.cpp)
 target_include_directories(${APP_NAME} PRIVATE include)
-target_link_libraries(${APP_NAME} PRIVATE palette image)
+target_link_libraries(${APP_NAME} PRIVATE palette image terrain)
 target_compile_options(${APP_NAME} PRIVATE ${COMPILE_OPTIONS})
