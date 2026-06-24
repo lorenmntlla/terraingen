@@ -48,14 +48,14 @@ bool Terrain::generate(double rugosity) {
 }
 
 void Terrain::diamondSquare() {
-  const dimension_t boundary = m_side - 1;
+  const dimension_t boundary{m_side - 1};
 
-  for (dimension_t bound = boundary; bound > 1; bound /= 2) {
-    const dimension_t half = bound / 2;
+  for (dimension_t bound{boundary}; bound > 1; bound /= 2) {
+    const dimension_t half{bound / 2};
 
     // Diamond
-    for (dimension_t dy = 0; dy < boundary; dy += bound) {
-      for (dimension_t dx = 0; dx < boundary; dx += bound) {
+    for (dimension_t dy{0}; dy < boundary; dy += bound) {
+      for (dimension_t dx{0}; dx < boundary; dx += bound) {
         const altitude_t upperLeft = operator()(dx, dy);
         const altitude_t upperRight = operator()(dx + bound, dy);
         const altitude_t bottomLeft = operator()(dx, dy + bound);
@@ -68,12 +68,12 @@ void Terrain::diamondSquare() {
     }
 
     // Square
-    for (dimension_t dy = 0; dy <= boundary; dy += half) {
-      dimension_t dx_start = (dy % bound == 0) ? half : 0;
+    for (dimension_t dy{0}; dy <= boundary; dy += half) {
+      dimension_t dxStart{(dy % bound == 0) ? half : 0};
 
-      for (dimension_t dx = dx_start; dx <= boundary; dx += bound) {
-        altitude_t sum = 0;
-        altitude_t count = 0;
+      for (dimension_t dx{dxStart}; dx <= boundary; dx += bound) {
+        altitude_t sum{0};
+        altitude_t count{0};
 
         if (dy >= half) {
           sum += operator()(dx, dy - half);
