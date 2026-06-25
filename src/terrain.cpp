@@ -5,7 +5,7 @@
 #include <string>
 
 altitude_t Terrain::noise() {
-  std::mt19937 generator{std::random_device{}()};
+  thread_local std::mt19937 generator{std::random_device{}()};
   std::uniform_int_distribution<altitude_t> dist{(altitude_t)-m_range, m_range};
 
   return dist(generator);
