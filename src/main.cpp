@@ -13,20 +13,32 @@ int main(int argc, char **argv) {
   dimension_t side = (dimension_t)atoi(argv[1]);
 
   Terrain terreno{side};
+  Image canvas{side, side};
+
   Image red{side, side};
   Image green{side, side};
   Image blue{side, side};
 
   terreno.generate(atof(argv[2]));
 
-  for (dimension_t height{0}; height < side * side; height++) {
-    channel_t c{(channel_t)terreno.data()[height]};
+  const dimension_t totalPoints{side * side};
+  for (dimension_t point{0}; point < totalPoints; point++) {
+    const altitude_t red_mask{0b0000'0110};
+    const altitude_t green_mask{0b0110'0000};
+    const altitude_t blue_mask{0b0001'1000};
 
-    red.data()[height] = {c, 0, 0};
-    green.data()[height] = {0, c, 0};
-    blue.data()[height] = {0, 0, c};
+    const channel_t r{(channel_t)((terreno.data()[point] & red_mask))};
+    const channel_t g{(channel_t)(terreno.data()[point] & green_mask)};
+    const channel_t b{(channel_t)(terreno.data()[point] & blue_mask)};
+    const channel_t c{(channel_t)(terreno.data()[point])};
+
+    canvas.data()[point] = {r, g, b};
+    red.data()[point] = {c, 0, 0};
+    green.data()[point] = {0, c, 0};
+    blue.data()[point] = {0, 0, c};
   }
 
+  canvas.savePPM("terrain.ppm");
   red.savePPM("terrain_red.ppm");
   green.savePPM("terrain_green.ppm");
   blue.savePPM("terrain_blue.ppm");
