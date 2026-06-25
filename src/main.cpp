@@ -27,10 +27,12 @@ int main(int argc, char **argv) {
     const altitude_t green_mask{0b0110'0000};
     const altitude_t blue_mask{0b0001'1000};
 
-    const channel_t r{(channel_t)((terreno.data()[point] & red_mask))};
-    const channel_t g{(channel_t)(terreno.data()[point] & green_mask)};
-    const channel_t b{(channel_t)(terreno.data()[point] & blue_mask)};
-    const channel_t c{(channel_t)(terreno.data()[point])};
+    const altitude_t height{terreno.data()[point]};
+
+    const channel_t r{(channel_t)((height & red_mask))};
+    const channel_t g{(channel_t)(height & green_mask)};
+    const channel_t b{(channel_t)(height & blue_mask)};
+    const channel_t c{(channel_t)(height)};
 
     canvas.data()[point] = {r, g, b};
     red.data()[point] = {c, 0, 0};
