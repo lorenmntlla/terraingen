@@ -1,9 +1,9 @@
 #pragma once
 #include "dimension.h"
-#include <random>
+#include <cstdint>
 #include <string>
 
-typedef int8_t altitude_t;
+using altitude_t = int8_t;
 
 class Terrain {
   const dimension_t m_side;
@@ -11,17 +11,13 @@ class Terrain {
   double m_rugosity;
   altitude_t m_range;
 
-  std::mt19937 m_generator;
-
   altitude_t *m_heightmap;
 
-  bool isPowOfTwo(dimension_t a) const;
-
-  altitude_t random();
+  altitude_t noise();
   void diamondSquare();
 
 public:
-  Terrain(dimension_t side = 3);
+  Terrain(dimension_t side);
 
   dimension_t side() const;
 
@@ -37,9 +33,9 @@ public:
 
   altitude_t &operator()(dimension_t x, dimension_t y);
 
-  altitude_t *data();
-
   bool readFile(const std::string &fileName);
+
+  altitude_t *data();
 
   ~Terrain();
 };
