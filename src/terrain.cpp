@@ -1,11 +1,24 @@
 #include "../include/terrain.h"
+#include <chrono>
 #include <cstdint>
 #include <random>
 #include <stdexcept>
 #include <string>
 
 altitude_t Terrain::noise() {
-  thread_local std::mt19937 generator{std::random_device{}()};
+  thread_local std::random_device rd{};
+  thread_local std::seed_seq seed{
+      static_cast<std::seed_seq::result_type>(
+          std::chrono::high_resolution_clock::now().time_since_epoch().count()),
+      rd(),
+      rd(),
+      rd(),
+      rd(),
+      rd(),
+      rd(),
+      rd()};
+  thread_local std::mt19937 generator{seed};
+
   std::uniform_int_distribution<altitude_t> dist{(altitude_t)-m_range, m_range};
 
   return dist(generator);
