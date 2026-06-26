@@ -2,9 +2,11 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <fstream>
 #include <random>
 #include <stdexcept>
 #include <string>
+#include <system_error>
 
 Terrain::Terrain(dimension_t expoent)
     : m_side{(expoent > 1) ? (dimension_t)std::pow(2, expoent) + 1 : 0},
@@ -23,6 +25,24 @@ Terrain::~Terrain() {
 dimension_t Terrain::side() const { return m_side; }
 dimension_t Terrain::lines() const { return m_side; }
 dimension_t Terrain::columns() const { return m_side; }
+
+bool Terrain::saveFile(const std::string &fileName) const {
+  std::ofstream altitude_file{fileName};
+
+  if (!altitude_file)
+    std::system_error(errno, std::generic_category(), fileName);
+
+  altitude_file << "T1\n";
+  altitude_file << m_side << '\n';
+  altitude_file << INT8_MAX << '\n';
+
+  const dimension_t heightTotal{m_side * m_side};
+  for (dimension_t point{0}; point < heightTotal; point++) {
+    altitude_file << (int)m_heightmap[point] << ' ';
+  }
+
+  return true;
+}
 
 altitude_t &Terrain::operator()(dimension_t x, dimension_t y) const {
   return m_heightmap[y * m_side + x];

@@ -2,6 +2,7 @@
 #include "color.h"
 #include "dimension.h"
 #include "image.h"
+#include <cmath>
 #include <iostream>
 
 int main(int argc, char **argv) {
@@ -10,9 +11,11 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  dimension_t side = (dimension_t)atoi(argv[1]);
+  const dimension_t expoent = (dimension_t)atoi(argv[1]);
 
-  Terrain terreno{side};
+  const dimension_t side{(dimension_t)std::pow(2, expoent) + 1};
+
+  Terrain terreno{expoent};
   Image canvas{side, side};
 
   Image red{side, side};
@@ -44,6 +47,8 @@ int main(int argc, char **argv) {
   red.savePPM("terrain_red.ppm");
   green.savePPM("terrain_green.ppm");
   blue.savePPM("terrain_blue.ppm");
+
+  terreno.saveFile("terreno.alt");
 
   return 0;
 }
