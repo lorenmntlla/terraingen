@@ -59,62 +59,65 @@ bool Terrain::generate(double rugosity) {
   operator()(boundary, 0) = noise();
   operator()(boundary, boundary) = noise();
 
-  diamondSquare();
+  for (dimension_t chunk{boundary}; chunk > 1; chunk /= 2) {
+    diamond(chunk);
+
+    square(chunk);
+
+    m_range = altitude_t(m_range * m_rugosity);
+  }
 
   return true;
 }
 
-void Terrain::diamondSquare() {
-  const dimension_t boundary{m_side - 1};
+void Terrain::diamond(dimension_t chunk) {
+  const dimension_t bound{m_side - 1};
+  const dimension_t half{chunk / 2};
 
-  for (dimension_t bound{boundary}; bound > 1; bound /= 2) {
-    const dimension_t half{bound / 2};
+  for (dimension_t dy{0}; dy < bound; dy += chunk) {
+    for (dimension_t dx{0}; dx < bound; dx += chunk) {
+      const altitude_t upperLeft = operator()(dx, dy);
+      const altitude_t upperRight = operator()(dx + chunk, dy);
+      const altitude_t bottomLeft = operator()(dx, dy + chunk);
+      const altitude_t bottomRight = operator()(dx + chunk, dy + chunk);
 
-    // Diamond
-    for (dimension_t dy{0}; dy < boundary; dy += bound) {
-      for (dimension_t dx{0}; dx < boundary; dx += bound) {
-        const altitude_t upperLeft = operator()(dx, dy);
-        const altitude_t upperRight = operator()(dx + bound, dy);
-        const altitude_t bottomLeft = operator()(dx, dy + bound);
-        const altitude_t bottomRight = operator()(dx + bound, dy + bound);
-
-        altitude_t &center = operator()(dx + half, dy + half);
-        center =
-            (upperLeft + upperRight + bottomLeft + bottomRight) / 4 + noise();
-      }
+      altitude_t &center = operator()(dx + half, dy + half);
+      center =
+          (upperLeft + upperRight + bottomLeft + bottomRight) / 4 + noise();
     }
+  }
+}
 
-    // Square
-    for (dimension_t dy{0}; dy <= boundary; dy += half) {
-      dimension_t dxStart{(dy % bound == 0) ? half : 0};
+void Terrain::square(dimension_t chunk) {
+  const dimension_t bound{m_side - 1};
+  const dimension_t half{chunk / 2};
 
-      for (dimension_t dx{dxStart}; dx <= boundary; dx += bound) {
-        altitude_t sum{0};
-        altitude_t count{0};
+  for (dimension_t dy{0}; dy <= bound; dy += half) {
+    dimension_t dxStart{(dy % chunk == 0) ? half : 0};
 
-        if (dy >= half) {
-          sum += operator()(dx, dy - half);
-          count++;
-        }
-        if (dy + half <= boundary) {
-          sum += operator()(dx, dy + half);
-          count++;
-        }
-        if (dx >= half) {
-          sum += operator()(dx - half, dy);
-          count++;
-        }
-        if (dx + half <= boundary) {
-          sum += operator()(dx + half, dy);
-          count++;
-        }
+    for (dimension_t dx{dxStart}; dx <= bound; dx += chunk) {
+      altitude_t sum{0};
+      altitude_t count{0};
 
-        operator()(dx, dy) = (sum / count) + noise();
+      if (dy >= half) {
+        sum += operator()(dx, dy - half);
+        count++;
       }
-    }
+      if (dy + half <= bound) {
+        sum += operator()(dx, dy + half);
+        count++;
+      }
+      if (dx >= half) {
+        sum += operator()(dx - half, dy);
+        count++;
+      }
+      if (dx + half <= bound) {
+        sum += operator()(dx + half, dy);
+        count++;
+      }
 
-    // Apply rugosity
-    m_range = altitude_t(m_range * m_rugosity);
+      operator()(dx, dy) = (sum / count) + noise();
+    }
   }
 }
 

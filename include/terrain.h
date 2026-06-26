@@ -14,7 +14,8 @@ class Terrain {
   altitude_t *m_heightmap;
 
   altitude_t noise();
-  void diamondSquare();
+  void diamond(dimension_t bound);
+  void square(dimension_t bound);
 
 public:
   Terrain(dimension_t side);
