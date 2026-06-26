@@ -9,6 +9,7 @@ class Terrain {
   dimension_t m_side;
 
   double m_rugosity;
+  altitude_t m_maxHeight;
   altitude_t m_range;
 
   altitude_t *m_heightmap;
@@ -17,8 +18,10 @@ class Terrain {
   void diamond(dimension_t bound);
   void square(dimension_t bound);
 
+  template <typename T> T parseNumber(std::string_view sv) const;
+
 public:
-  Terrain(dimension_t expoent);
+  Terrain(dimension_t expoent = 1);
 
   ~Terrain();
 
@@ -28,11 +31,11 @@ public:
 
   dimension_t columns() const;
 
-  bool saveFile(const std::string &fileName) const;
-
   altitude_t &operator()(dimension_t x, dimension_t y) const;
 
   altitude_t &operator()(dimension_t x, dimension_t y);
+
+  bool saveFile(const std::string &fileName) const;
 
   bool readFile(const std::string &fileName);
 

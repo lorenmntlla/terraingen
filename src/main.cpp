@@ -15,14 +15,17 @@ int main(int argc, char **argv) {
 
   const dimension_t side{(dimension_t)std::pow(2, expoent) + 1};
 
-  Terrain terreno{expoent};
+  Terrain map{expoent};
+
+  map.generate(atof(argv[2]));
+
+  map.saveFile("terreno.alt");
+
+  Terrain terreno{};
+
+  terreno.readFile("terreno.alt");
+
   Image canvas{side, side};
-
-  Image red{side, side};
-  Image green{side, side};
-  Image blue{side, side};
-
-  terreno.generate(atof(argv[2]));
 
   const dimension_t totalPoints{side * side};
   for (dimension_t point{0}; point < totalPoints; point++) {
@@ -35,20 +38,11 @@ int main(int argc, char **argv) {
     const channel_t r{(channel_t)((height & red_mask))};
     const channel_t g{(channel_t)(height & green_mask)};
     const channel_t b{(channel_t)(height & blue_mask)};
-    const channel_t c{(channel_t)(height)};
 
     canvas.data()[point] = {r, g, b};
-    red.data()[point] = {c, 0, 0};
-    green.data()[point] = {0, c, 0};
-    blue.data()[point] = {0, 0, c};
   }
 
   canvas.savePPM("terrain.ppm");
-  red.savePPM("terrain_red.ppm");
-  green.savePPM("terrain_green.ppm");
-  blue.savePPM("terrain_blue.ppm");
-
-  terreno.saveFile("terreno.alt");
 
   return 0;
 }
