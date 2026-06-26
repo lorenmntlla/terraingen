@@ -1,37 +1,23 @@
 #include "../include/terrain.h"
 #include <chrono>
+#include <cmath>
 #include <cstdint>
 #include <random>
 #include <stdexcept>
 #include <string>
 
-altitude_t Terrain::noise() {
-  thread_local std::random_device rd{};
-  thread_local std::seed_seq seed{
-      static_cast<std::seed_seq::result_type>(
-          std::chrono::high_resolution_clock::now().time_since_epoch().count()),
-      rd(),
-      rd(),
-      rd(),
-      rd(),
-      rd(),
-      rd(),
-      rd()};
-  thread_local std::mt19937 generator{seed};
-
-  std::uniform_int_distribution<altitude_t> dist{(altitude_t)-m_range, m_range};
-
-  return dist(generator);
+Terrain::Terrain(dimension_t expoent)
+    : m_side{(expoent > 1) ? (dimension_t)std::pow(2, expoent) + 1 : 0},
+      m_rugosity{0}, m_range{INT8_MAX},
+      m_heightmap{(m_side != 0) ? new altitude_t[m_side * m_side]() : nullptr} {
+  if (m_side == 0)
+    throw std::invalid_argument("Expoent must be greater than 1. Received: " +
+                                std::to_string(expoent));
 }
 
-Terrain::Terrain(dimension_t side)
-    : m_side{(side > 2 and ((side - 1) & (side - 2)) == 0) ? side : 0},
-      m_rugosity{0}, m_range{INT8_MAX},
-      m_heightmap{(m_side == 0) ? nullptr : new altitude_t[m_side * m_side]()} {
-  if (m_side == 0)
-    throw std::invalid_argument(
-        "Terrain dimension must be (2^n) + 1. Received: " +
-        std::to_string(side));
+Terrain::~Terrain() {
+  delete[] m_heightmap;
+  m_heightmap = nullptr;
 }
 
 dimension_t Terrain::side() const { return m_side; }
@@ -42,7 +28,11 @@ altitude_t &Terrain::operator()(dimension_t x, dimension_t y) const {
   return m_heightmap[y * m_side + x];
 }
 
-bool Terrain::saveFile(const std::string &fileName) const {};
+altitude_t &Terrain::operator()(dimension_t x, dimension_t y) {
+  return m_heightmap[y * m_side + x];
+}
+
+bool Terrain::readFile(const std::string &fileName) {};
 
 bool Terrain::generate(double rugosity) {
   if (rugosity < 0 or rugosity > 1)
@@ -61,13 +51,33 @@ bool Terrain::generate(double rugosity) {
 
   for (dimension_t chunk{boundary}; chunk > 1; chunk /= 2) {
     diamond(chunk);
-
     square(chunk);
 
     m_range = altitude_t(m_range * m_rugosity);
   }
 
   return true;
+}
+
+altitude_t *Terrain::data() { return m_heightmap; }
+
+altitude_t Terrain::noise() const {
+  thread_local std::random_device rd{};
+  thread_local std::seed_seq seed{
+      static_cast<std::seed_seq::result_type>(
+          std::chrono::high_resolution_clock::now().time_since_epoch().count()),
+      rd(),
+      rd(),
+      rd(),
+      rd(),
+      rd(),
+      rd(),
+      rd()};
+  thread_local std::mt19937 generator{seed};
+
+  std::uniform_int_distribution<altitude_t> dist{(altitude_t)-m_range, m_range};
+
+  return dist(generator);
 }
 
 void Terrain::diamond(dimension_t chunk) {
@@ -82,8 +92,8 @@ void Terrain::diamond(dimension_t chunk) {
       const altitude_t bottomRight = operator()(dx + chunk, dy + chunk);
 
       altitude_t &center = operator()(dx + half, dy + half);
-      center =
-          (upperLeft + upperRight + bottomLeft + bottomRight) / 4 + noise();
+      center = static_cast<altitude_t>(
+          (upperLeft + upperRight + bottomLeft + bottomRight) / 4 + noise());
     }
   }
 }
@@ -116,20 +126,7 @@ void Terrain::square(dimension_t chunk) {
         count++;
       }
 
-      operator()(dx, dy) = (sum / count) + noise();
+      operator()(dx, dy) = static_cast<altitude_t>((sum / count) + noise());
     }
   }
-}
-
-altitude_t &Terrain::operator()(dimension_t x, dimension_t y) {
-  return m_heightmap[y * m_side + x];
-}
-
-bool Terrain::readFile(const std::string &fileName) {};
-
-altitude_t *Terrain::data() { return m_heightmap; }
-
-Terrain::~Terrain() {
-  delete[] m_heightmap;
-  m_heightmap = nullptr;
 }
