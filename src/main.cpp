@@ -19,11 +19,11 @@ int main(int argc, char **argv) {
 
   map.generate(atof(argv[2]));
 
-  map.saveFile("terreno.alt");
+  map.saveFile("terreno.hgm");
 
   Terrain terreno{};
 
-  terreno.readFile("terreno.alt");
+  terreno.readFile("terreno.hgm");
 
   Image canvas{side, side};
 
