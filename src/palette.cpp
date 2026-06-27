@@ -27,6 +27,15 @@ Palette::Palette(const Palette &palette) : m_colors{palette.m_colors} {}
 
 Palette::Palette(const std::vector<Color> &colors) : m_colors{colors} {}
 
+size_t Palette::size() const { return m_colors.size(); }
+
+std::optional<Color> Palette::getColor(size_t i) const {
+  if (i >= size())
+    return std::nullopt;
+
+  return m_colors[i];
+}
+
 void Palette::addColor(const Color &color) { m_colors.push_back(color); }
 
 void Palette::addColor(channel_t r, channel_t g, channel_t b) {
@@ -48,13 +57,4 @@ void Palette::addColor(std::string_view hex) {
   channel_t blue = parseNumber<channel_t>(hex.substr(4, 2), 16);
 
   m_colors.push_back(Color{red, green, blue});
-}
-
-size_t Palette::size() const { return m_colors.size(); }
-
-std::optional<Color> Palette::getColor(size_t i) const {
-  if (i >= size())
-    return std::nullopt;
-
-  return m_colors[i];
 }
