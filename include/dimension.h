@@ -1,2 +1,2 @@
 #pragma once
-typedef long unsigned int dimension_t;
+using dimension_t = long unsigned int;

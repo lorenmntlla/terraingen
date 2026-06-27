@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-typedef uint8_t channel_t;
+using channel_t = uint8_t;
 
 struct Color {
   channel_t r;
