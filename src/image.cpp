@@ -1,7 +1,10 @@
 #include "../include/image.h"
 #include "../include/parseNumber.h"
+#include <cerrno>
 #include <fstream>
+#include <iostream>
 #include <string>
+#include <system_error>
 
 Image::Image(dimension_t length, dimension_t height)
     : m_length{length}, m_height{height},
@@ -24,6 +27,17 @@ Color &Image::operator()(dimension_t x, dimension_t y) {
 bool Image::savePPM(const std::string &fileName) const {
   std::ofstream PPM{fileName, std::ios::trunc | std::ios::out};
 
+  if (!PPM) {
+    auto err{errno};
+    std::cerr << "Could not open " << fileName;
+
+    if (err != 0)
+      std::cerr << ": " << std::generic_category().message(err);
+
+    std::cerr << '\n';
+    return false;
+  }
+
   PPM << "P3\n";
   PPM << m_length << ' ' << m_height << '\n';
   PPM << 255 << '\n';
@@ -42,14 +56,27 @@ bool Image::savePPM(const std::string &fileName) const {
 bool Image::readPPM(const std::string &fileName) {
   std::ifstream PPM{fileName};
 
-  if (!PPM)
-    throw std::system_error(errno, std::generic_category(), fileName);
+  if (!PPM) {
+    auto err{errno};
+    std::cerr << "Could not open " << fileName;
 
-  std::string current;
+    if (err != 0)
+      std::cerr << ": " << std::generic_category().message(err);
+
+    std::cerr << '\n';
+    return false;
+  }
+
+  std::string current{};
 
   PPM >> current;
-  if (current != "P3")
+
+  if (current != "P3") {
+    std::cerr << fileName << ' ' << "Unsupported file format: " << current
+              << '\n';
+
     return false;
+  }
 
   PPM >> current;
   m_length = parseNumber<dimension_t>(current);
@@ -58,8 +85,13 @@ bool Image::readPPM(const std::string &fileName) {
   m_height = parseNumber<dimension_t>(current);
 
   PPM >> current;
-  if (current != "255")
+
+  if (current != "255") {
+    std::cerr << fileName << ' ' << "Unsupported color range: " << current
+              << '\n';
+
     return false;
+  }
 
   delete[] m_pixels;
   m_pixels = new Color[m_length * m_height]();
@@ -70,9 +102,9 @@ bool Image::readPPM(const std::string &fileName) {
 
     PPM >> red >> green >> blue;
 
-    channel_t r = parseNumber<channel_t>(red);
-    channel_t g = parseNumber<channel_t>(green);
-    channel_t b = parseNumber<channel_t>(blue);
+    const channel_t r = parseNumber<channel_t>(red);
+    const channel_t g = parseNumber<channel_t>(green);
+    const channel_t b = parseNumber<channel_t>(blue);
 
     m_pixels[p] = {r, g, b};
   }
