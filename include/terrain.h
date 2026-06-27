@@ -23,12 +23,6 @@ public:
 
   ~Terrain();
 
-  dimension_t side() const;
-
-  dimension_t lines() const;
-
-  dimension_t columns() const;
-
   altitude_t &operator()(dimension_t x, dimension_t y) const;
 
   altitude_t &operator()(dimension_t x, dimension_t y);
@@ -38,6 +32,12 @@ public:
   bool readFile(const std::string &fileName);
 
   bool generate(double rugosity);
+
+  dimension_t side() const;
+
+  dimension_t lines() const;
+
+  dimension_t columns() const;
 
   altitude_t *data();
 };

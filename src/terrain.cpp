@@ -16,7 +16,7 @@ Terrain::Terrain(dimension_t expoent)
       m_rugosity{}, m_maxHeight{INT8_MAX}, m_range{},
       m_heightmap{(m_side > 0) ? new altitude_t[m_side * m_side]() : nullptr} {
   if (m_side < 3)
-    throw std::invalid_argument("Expoent must be greater than 1. Received: " +
+    throw std::invalid_argument("Expoent must be greater than 0. Received: " +
                                 std::to_string(expoent));
 }
 
@@ -24,10 +24,6 @@ Terrain::~Terrain() {
   delete[] m_heightmap;
   m_heightmap = nullptr;
 }
-
-dimension_t Terrain::side() const { return m_side; }
-dimension_t Terrain::lines() const { return m_side; }
-dimension_t Terrain::columns() const { return m_side; }
 
 altitude_t &Terrain::operator()(dimension_t x, dimension_t y) const {
   return m_heightmap[y * m_side + x];
@@ -150,6 +146,12 @@ bool Terrain::generate(double rugosity) {
 
   return true;
 }
+
+dimension_t Terrain::side() const { return m_side; }
+
+dimension_t Terrain::lines() const { return m_side; }
+
+dimension_t Terrain::columns() const { return m_side; }
 
 altitude_t *Terrain::data() { return m_heightmap; }
 
