@@ -23,7 +23,8 @@ int main(int argc, char **argv) {
 
   Terrain terreno{};
 
-  terreno.readFile("terreno.hgm");
+  if (!terreno.readFile("terreno.hgm"))
+    return 1;
 
   Image canvas{side, side};
 

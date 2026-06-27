@@ -85,9 +85,10 @@ bool Terrain::readFile(const std::string &fileName) {
 
   file >> current;
   const dimension_t side{parseNumber<dimension_t>(current)};
+  const double pow{(std::log(side - 1) / std::log(2))};
 
-  if (dimension_t(std::log(side - 1) / std::log(2)) % 2 != 0) {
-    std::cerr << fileName << ' '
+  if (pow != std::floor(pow)) {
+    std::cerr << fileName << ": "
               << "Terrain dimension must be (2^n) + 1. Received: " << current
               << '\n';
 
@@ -98,7 +99,7 @@ bool Terrain::readFile(const std::string &fileName) {
   const altitude_t maxHeight{parseNumber<altitude_t>(current)};
 
   if (maxHeight < 0) {
-    std::cerr << fileName << ' '
+    std::cerr << fileName << ": "
               << "Max Height must be greater than 0. Received: " << current
               << '\n';
 
@@ -124,7 +125,7 @@ bool Terrain::readFile(const std::string &fileName) {
 bool Terrain::generate(double rugosity) {
   if (rugosity < 0 or rugosity > 1)
     throw std::invalid_argument(
-        "Rugosity must be between 0 and 1 inclusive. Received" +
+        "Rugosity must be between 0 and 1 inclusive. Received: " +
         std::to_string(rugosity));
 
   m_rugosity = rugosity;
