@@ -2,15 +2,12 @@
 #include "color.h"
 #include "dimension.h"
 #include <string>
-#include <string_view>
 
 class Image {
   dimension_t m_length;
   dimension_t m_height;
 
   Color *m_pixels;
-
-  dimension_t parseNumber(std::string_view sv) const;
 
 public:
   Image(dimension_t length = 0, dimension_t height = 0);

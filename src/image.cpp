@@ -1,15 +1,7 @@
 #include "../include/image.h"
-#include <charconv>
+#include "../include/parseNumber.h"
 #include <fstream>
 #include <string>
-#include <string_view>
-
-dimension_t Image::parseNumber(std::string_view sv) const {
-  dimension_t decimal{};
-  std::from_chars(sv.data(), sv.data() + sv.size(), decimal);
-
-  return decimal;
-}
 
 Image::Image(dimension_t length, dimension_t height)
     : m_length{length}, m_height{height},
@@ -65,10 +57,10 @@ bool Image::readPPM(const std::string &fileName) {
     return false;
 
   PPM >> current;
-  m_length = parseNumber(current);
+  m_length = parseNumber<dimension_t>(current);
 
   PPM >> current;
-  m_height = parseNumber(current);
+  m_height = parseNumber<dimension_t>(current);
 
   PPM >> current;
   if (current != "255")
@@ -83,9 +75,9 @@ bool Image::readPPM(const std::string &fileName) {
 
     PPM >> red >> green >> blue;
 
-    channel_t r = (channel_t)parseNumber(red);
-    channel_t g = (channel_t)parseNumber(green);
-    channel_t b = (channel_t)parseNumber(blue);
+    channel_t r = parseNumber<channel_t>(red);
+    channel_t g = parseNumber<channel_t>(green);
+    channel_t b = parseNumber<channel_t>(blue);
 
     m_pixels[p] = {r, g, b};
   }

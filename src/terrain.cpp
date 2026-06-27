@@ -1,4 +1,5 @@
 #include "../include/terrain.h"
+#include "../include/parseNumber.h"
 #include <cerrno>
 #include <chrono>
 #include <cmath>
@@ -221,11 +222,4 @@ void Terrain::square(dimension_t chunk) {
       operator()(dx, dy) = static_cast<altitude_t>((sum / count) + noise());
     }
   }
-}
-
-template <typename T> T Terrain::parseNumber(std::string_view sv) const {
-  T t{};
-  std::from_chars(sv.data(), sv.data() + sv.size(), t);
-
-  return t;
 }

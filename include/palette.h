@@ -7,8 +7,6 @@
 class Palette {
   std::vector<Color> m_colors{};
 
-  channel_t parseChannel(std::string_view sv) const;
-
 public:
   Palette();
 

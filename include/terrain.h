@@ -18,8 +18,6 @@ class Terrain {
   void diamond(dimension_t bound);
   void square(dimension_t bound);
 
-  template <typename T> T parseNumber(std::string_view sv) const;
-
 public:
   Terrain(dimension_t expoent = 1);
 
