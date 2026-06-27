@@ -18,18 +18,10 @@ class Terrain {
   void diamond(dimension_t bound);
   void square(dimension_t bound);
 
-  template <typename T> T parseNumber(std::string_view sv) const;
-
 public:
   Terrain(dimension_t expoent = 1);
 
   ~Terrain();
-
-  dimension_t side() const;
-
-  dimension_t lines() const;
-
-  dimension_t columns() const;
 
   altitude_t &operator()(dimension_t x, dimension_t y) const;
 
@@ -40,6 +32,12 @@ public:
   bool readFile(const std::string &fileName);
 
   bool generate(double rugosity);
+
+  dimension_t side() const;
+
+  dimension_t lines() const;
+
+  dimension_t columns() const;
 
   altitude_t *data();
 };

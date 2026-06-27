@@ -11,13 +11,16 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
-add_library(palette src/palette.cpp include/palette.h include/color.h)
+add_library(parseNumber INTERFACE include/parseNumber.h)
+target_compile_options(parseNumber INTERFACE ${COMPILE_OPTIONS})
+
+add_library(palette src/palette.cpp include/palette.h include/color.h include/parseNumber.h)
 target_compile_options(palette PRIVATE ${COMPILE_OPTIONS})
 
-add_library(image src/image.cpp include/image.h include/color.h include/dimension.h)
+add_library(image src/image.cpp include/image.h include/color.h include/dimension.h include/parseNumber.h)
 target_compile_options(image PRIVATE ${COMPILE_OPTIONS})
 
-add_library(terrain src/terrain.cpp include/terrain.h include/dimension.h)
+add_library(terrain src/terrain.cpp include/terrain.h include/dimension.h include/parseNumber.h)
 target_compile_options(terrain PRIVATE ${COMPILE_OPTIONS})
 
 add_executable(${APP_NAME} src/main.cpp)

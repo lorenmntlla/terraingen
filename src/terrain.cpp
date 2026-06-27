@@ -1,4 +1,5 @@
 #include "../include/terrain.h"
+#include "../include/parseNumber.h"
 #include <cerrno>
 #include <chrono>
 #include <cmath>
@@ -15,7 +16,7 @@ Terrain::Terrain(dimension_t expoent)
       m_rugosity{}, m_maxHeight{INT8_MAX}, m_range{},
       m_heightmap{(m_side > 0) ? new altitude_t[m_side * m_side]() : nullptr} {
   if (m_side < 3)
-    throw std::invalid_argument("Expoent must be greater than 1. Received: " +
+    throw std::invalid_argument("Expoent must be greater than 0. Received: " +
                                 std::to_string(expoent));
 }
 
@@ -23,10 +24,6 @@ Terrain::~Terrain() {
   delete[] m_heightmap;
   m_heightmap = nullptr;
 }
-
-dimension_t Terrain::side() const { return m_side; }
-dimension_t Terrain::lines() const { return m_side; }
-dimension_t Terrain::columns() const { return m_side; }
 
 altitude_t &Terrain::operator()(dimension_t x, dimension_t y) const {
   return m_heightmap[y * m_side + x];
@@ -88,9 +85,10 @@ bool Terrain::readFile(const std::string &fileName) {
 
   file >> current;
   const dimension_t side{parseNumber<dimension_t>(current)};
+  const double pow{(std::log(side - 1) / std::log(2))};
 
-  if (dimension_t(std::log(side - 1) / std::log(2)) % 2 != 0) {
-    std::cerr << fileName << ' '
+  if (pow != std::floor(pow)) {
+    std::cerr << fileName << ": "
               << "Terrain dimension must be (2^n) + 1. Received: " << current
               << '\n';
 
@@ -101,7 +99,7 @@ bool Terrain::readFile(const std::string &fileName) {
   const altitude_t maxHeight{parseNumber<altitude_t>(current)};
 
   if (maxHeight < 0) {
-    std::cerr << fileName << ' '
+    std::cerr << fileName << ": "
               << "Max Height must be greater than 0. Received: " << current
               << '\n';
 
@@ -127,7 +125,7 @@ bool Terrain::readFile(const std::string &fileName) {
 bool Terrain::generate(double rugosity) {
   if (rugosity < 0 or rugosity > 1)
     throw std::invalid_argument(
-        "Rugosity must be between 0 and 1 inclusive. Received" +
+        "Rugosity must be between 0 and 1 inclusive. Received: " +
         std::to_string(rugosity));
 
   m_rugosity = rugosity;
@@ -149,6 +147,12 @@ bool Terrain::generate(double rugosity) {
 
   return true;
 }
+
+dimension_t Terrain::side() const { return m_side; }
+
+dimension_t Terrain::lines() const { return m_side; }
+
+dimension_t Terrain::columns() const { return m_side; }
 
 altitude_t *Terrain::data() { return m_heightmap; }
 
@@ -221,11 +225,4 @@ void Terrain::square(dimension_t chunk) {
       operator()(dx, dy) = static_cast<altitude_t>((sum / count) + noise());
     }
   }
-}
-
-template <typename T> T Terrain::parseNumber(std::string_view sv) const {
-  T t{};
-  std::from_chars(sv.data(), sv.data() + sv.size(), t);
-
-  return t;
 }

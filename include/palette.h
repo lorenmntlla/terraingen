@@ -7,8 +7,6 @@
 class Palette {
   std::vector<Color> m_colors{};
 
-  channel_t parseChannel(std::string_view sv) const;
-
 public:
   Palette();
 
@@ -18,13 +16,13 @@ public:
 
   Palette(const std::vector<Color> &colors);
 
+  size_t size() const;
+
+  std::optional<Color> getColor(size_t i) const;
+
   void addColor(const Color &color);
 
   void addColor(channel_t r, channel_t g, channel_t b);
 
   void addColor(std::string_view hex);
-
-  size_t size() const;
-
-  std::optional<Color> getColor(size_t i) const;
 };

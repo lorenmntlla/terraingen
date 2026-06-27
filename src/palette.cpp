@@ -1,5 +1,5 @@
 #include "../include/palette.h"
-#include <charconv>
+#include "../include/parseNumber.h"
 #include <fstream>
 #include <stdexcept>
 #include <string>
@@ -23,16 +23,18 @@ Palette::Palette(const std::string &fileName) : m_colors{} {
   }
 }
 
-channel_t Palette::parseChannel(std::string_view sv) const {
-  channel_t channel{};
-  std::from_chars(sv.data(), sv.data() + sv.size(), channel, 16);
-
-  return channel;
-}
-
 Palette::Palette(const Palette &palette) : m_colors{palette.m_colors} {}
 
 Palette::Palette(const std::vector<Color> &colors) : m_colors{colors} {}
+
+size_t Palette::size() const { return m_colors.size(); }
+
+std::optional<Color> Palette::getColor(size_t i) const {
+  if (i >= size())
+    return std::nullopt;
+
+  return m_colors[i];
+}
 
 void Palette::addColor(const Color &color) { m_colors.push_back(color); }
 
@@ -50,18 +52,9 @@ void Palette::addColor(std::string_view hex) {
   if (hex.size() != 6)
     throw std::invalid_argument("Hexadecimal must have exactly 6 digits.");
 
-  channel_t red = parseChannel(hex.substr(0, 2));
-  channel_t green = parseChannel(hex.substr(2, 2));
-  channel_t blue = parseChannel(hex.substr(4, 2));
+  channel_t red = parseNumber<channel_t>(hex.substr(0, 2), 16);
+  channel_t green = parseNumber<channel_t>(hex.substr(2, 2), 16);
+  channel_t blue = parseNumber<channel_t>(hex.substr(4, 2), 16);
 
   m_colors.push_back(Color{red, green, blue});
-}
-
-size_t Palette::size() const { return m_colors.size(); }
-
-std::optional<Color> Palette::getColor(size_t i) const {
-  if (i >= size())
-    return std::nullopt;
-
-  return m_colors[i];
 }
