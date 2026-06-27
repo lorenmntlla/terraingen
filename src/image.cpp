@@ -72,7 +72,7 @@ bool Image::readPPM(const std::string &fileName) {
   PPM >> current;
 
   if (current != "P3") {
-    std::cerr << fileName << ' ' << "Unsupported file format: " << current
+    std::cerr << fileName << ": " << "Unsupported file format: " << current
               << '\n';
 
     return false;
@@ -87,7 +87,7 @@ bool Image::readPPM(const std::string &fileName) {
   PPM >> current;
 
   if (current != "255") {
-    std::cerr << fileName << ' ' << "Unsupported color range: " << current
+    std::cerr << fileName << ": " << "Unsupported color range: " << current
               << '\n';
 
     return false;
