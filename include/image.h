@@ -12,25 +12,19 @@ class Image {
 public:
   Image(dimension_t length = 0, dimension_t height = 0);
 
-  Image(const std::string &fileName);
+  ~Image();
 
   Color &operator()(dimension_t x, dimension_t y) const;
+
+  Color &operator()(dimension_t x, dimension_t y);
+
+  bool savePPM(const std::string &fileName) const;
+
+  bool readPPM(const std::string &fileName);
 
   dimension_t length() const;
 
   dimension_t height() const;
 
   Color *data() const;
-
-  Color getPixel(dimension_t x, dimension_t y) const;
-
-  bool savePPM(const std::string &fileName) const;
-
-  Color &operator()(dimension_t x, dimension_t y);
-
-  void setPixel(dimension_t x, dimension_t y, const Color &color);
-
-  bool readPPM(const std::string &fileName);
-
-  ~Image();
 };

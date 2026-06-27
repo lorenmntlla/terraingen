@@ -8,19 +8,18 @@ Image::Image(dimension_t length, dimension_t height)
       m_pixels{(length > 0 and height > 0) ? new Color[m_length * m_height]()
                                            : nullptr} {}
 
+Image::~Image() {
+  delete[] m_pixels;
+  m_pixels = nullptr;
+}
+
 Color &Image::operator()(dimension_t x, dimension_t y) const {
   return m_pixels[y * m_length + x];
 }
 
-Color Image::getPixel(dimension_t x, dimension_t y) const {
+Color &Image::operator()(dimension_t x, dimension_t y) {
   return m_pixels[y * m_length + x];
 }
-
-dimension_t Image::length() const { return m_length; }
-
-dimension_t Image::height() const { return m_height; }
-
-Color *Image::data() const { return m_pixels; }
 
 bool Image::savePPM(const std::string &fileName) const {
   std::ofstream PPM{fileName, std::ios::trunc | std::ios::out};
@@ -38,10 +37,6 @@ bool Image::savePPM(const std::string &fileName) const {
   }
 
   return true;
-}
-
-Color &Image::operator()(dimension_t x, dimension_t y) {
-  return m_pixels[y * m_length + x];
 }
 
 bool Image::readPPM(const std::string &fileName) {
@@ -85,11 +80,8 @@ bool Image::readPPM(const std::string &fileName) {
   return true;
 }
 
-void Image::setPixel(dimension_t x, dimension_t y, const Color &color) {
-  m_pixels[y * m_length + x] = color;
-}
+dimension_t Image::length() const { return m_length; }
 
-Image::~Image() {
-  delete[] m_pixels;
-  m_pixels = nullptr;
-}
+dimension_t Image::height() const { return m_height; }
+
+Color *Image::data() const { return m_pixels; }
