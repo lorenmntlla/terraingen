@@ -42,7 +42,7 @@ altitude_t &Terrain::operator()(dimension_t x, dimension_t y) {
 }
 
 bool Terrain::saveFile(const std::string &fileName) const {
-  std::ofstream file{fileName};
+  std::ofstream file{fileName, std::ios::out | std::ios::binary};
 
   if (!file) {
     auto err{errno};
@@ -66,7 +66,7 @@ bool Terrain::saveFile(const std::string &fileName) const {
 }
 
 bool Terrain::readFile(const std::string &fileName) {
-  std::ifstream file{fileName};
+  std::ifstream file{fileName, std::ios::in | std::ios::binary};
 
   if (!file) {
     auto err{errno};
