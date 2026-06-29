@@ -12,6 +12,8 @@ class Image {
 public:
   Image(dimension_t length = 0, dimension_t height = 0);
 
+  Image(const Image &other);
+
   ~Image();
 
   Color &operator()(dimension_t x, dimension_t y) const;

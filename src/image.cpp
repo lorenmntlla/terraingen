@@ -1,6 +1,7 @@
 #include "../include/image.h"
 #include "../include/parseNumber.h"
 #include <cerrno>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -10,6 +11,11 @@ Image::Image(dimension_t length, dimension_t height)
     : m_length{length}, m_height{height},
       m_pixels{(length > 0 and height > 0) ? new Color[m_length * m_height]()
                                            : nullptr} {}
+Image::Image(const Image &other)
+    : m_length{other.m_length}, m_height{other.m_height},
+      m_pixels{new Color[m_length * m_height]} {
+  memcpy(m_pixels, other.m_pixels, m_length * m_height * sizeof(Color));
+}
 
 Image::~Image() {
   delete[] m_pixels;
