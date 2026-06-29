@@ -19,11 +19,11 @@ int main(int argc, char **argv) {
 
   map.generate(atof(argv[2]));
 
-  map.saveFile("terreno.hgm");
+  map.saveFile("terrain.hgm");
 
-  Terrain terreno{};
+  Terrain terrain{};
 
-  if (!terreno.readFile("terreno.hgm"))
+  if (!terrain.readFile("terrain.hgm"))
     return 1;
 
   Image canvas{side, side};
@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     const altitude_t green_mask{0b0110'0000};
     const altitude_t blue_mask{0b0001'1000};
 
-    const altitude_t height{terreno.data()[point]};
+    const altitude_t height{terrain.data()[point]};
 
     const channel_t r{(channel_t)((height & red_mask))};
     const channel_t g{(channel_t)(height & green_mask)};
