@@ -4,6 +4,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <random>
@@ -18,6 +19,13 @@ Terrain::Terrain(dimension_t expoent)
   if (m_side < 3)
     throw std::invalid_argument("Expoent must be greater than 0. Received: " +
                                 std::to_string(expoent));
+}
+
+Terrain::Terrain(const Terrain &other)
+    : m_side{other.m_side}, m_rugosity{other.m_rugosity},
+      m_maxHeight{other.m_maxHeight}, m_range{other.m_range},
+      m_heightmap{new altitude_t[m_side * m_side]} {
+  memcpy(m_heightmap, other.m_heightmap, m_side * m_side);
 }
 
 Terrain::~Terrain() {

@@ -21,6 +21,8 @@ class Terrain {
 public:
   Terrain(dimension_t expoent = 1);
 
+  Terrain(const Terrain &other);
+
   ~Terrain();
 
   altitude_t &operator()(dimension_t x, dimension_t y) const;
