@@ -66,8 +66,8 @@ bool Terrain::saveFile(const std::string &fileName) const {
   file << m_seed << '\n';
   file << (int)m_maxHeight << '\n';
 
-  const long heightmap_Size{(long)(m_side * m_side)};
-  file.write(reinterpret_cast<char *>(m_heightmap), heightmap_Size);
+  const long bytes{(long)(m_side * m_side * sizeof(altitude_t))};
+  file.write(reinterpret_cast<char *>(m_heightmap), bytes);
 
   return true;
 }
@@ -130,13 +130,12 @@ bool Terrain::readFile(const std::string &fileName) {
   delete[] m_heightmap;
   m_heightmap = new altitude_t[m_side * m_side];
 
-  const long heightmap_Size{(long)(m_side * m_side)};
-  file.read(reinterpret_cast<char *>(m_heightmap), heightmap_Size);
+  const long bytes{(long)(m_side * m_side * sizeof(altitude_t))};
+  file.read(reinterpret_cast<char *>(m_heightmap), bytes);
 
   if (file.fail()) {
     std::cerr << fileName << ": " << "Could not read whole terrain.\n"
-              << "Expected: " << heightmap_Size << " Read: " << file.gcount()
-              << '\n';
+              << "Expected: " << bytes << " Read: " << file.gcount() << '\n';
 
     return false;
   }
