@@ -65,6 +65,7 @@ bool Terrain::saveFile(const std::string &fileName) const {
 
   file << "T1\n";
   file << m_side << '\n';
+  file << m_seed << '\n';
   file << (int)m_maxHeight << '\n';
 
   const long heightmap_Size{(long)(m_side * m_side)};
@@ -110,6 +111,9 @@ bool Terrain::readFile(const std::string &fileName) {
   }
 
   file >> current;
+  const unsigned long seed{parseNumber<unsigned long>(current)};
+
+  file >> current;
   const altitude_t maxHeight{parseNumber<altitude_t>(current)};
 
   if (maxHeight < 0) {
@@ -121,6 +125,8 @@ bool Terrain::readFile(const std::string &fileName) {
   }
 
   m_side = side;
+  m_isSeeded = true;
+  m_seed = seed;
   m_maxHeight = maxHeight;
 
   delete[] m_heightmap;
