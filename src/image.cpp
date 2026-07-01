@@ -30,6 +30,19 @@ Color &Image::operator()(dimension_t x, dimension_t y) {
   return m_pixels[y * m_length + x];
 }
 
+void swap(Image &first, Image &second) {
+  using std::swap;
+
+  swap(first.m_length, second.m_length);
+  swap(first.m_height, second.m_height);
+  swap(first.m_pixels, second.m_pixels);
+}
+
+Image &Image::operator=(Image other) {
+  swap(*this, other);
+  return *this;
+}
+
 bool Image::savePPM(const std::string &fileName) const {
   std::ofstream PPM{fileName, std::ios::trunc | std::ios::out};
 

@@ -20,6 +20,10 @@ public:
 
   Color &operator()(dimension_t x, dimension_t y);
 
+  friend void swap(Image &first, Image &second);
+
+  Image &operator=(Image other);
+
   bool savePPM(const std::string &fileName) const;
 
   bool readPPM(const std::string &fileName);

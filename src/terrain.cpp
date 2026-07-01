@@ -41,6 +41,21 @@ altitude_t &Terrain::operator()(dimension_t x, dimension_t y) {
   return m_heightmap[y * m_side + x];
 }
 
+void swap(Terrain &first, Terrain &second) {
+  using std::swap;
+
+  swap(first.m_side, second.m_side);
+  swap(first.m_rugosity, second.m_rugosity);
+  swap(first.m_maxHeight, second.m_maxHeight);
+  swap(first.m_range, second.m_range);
+  swap(first.m_heightmap, second.m_heightmap);
+}
+
+Terrain &Terrain::operator=(Terrain other) {
+  swap(*this, other);
+  return *this;
+}
+
 bool Terrain::saveFile(const std::string &fileName) const {
   std::ofstream file{fileName, std::ios::out | std::ios::binary};
 

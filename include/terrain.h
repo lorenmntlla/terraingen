@@ -29,6 +29,10 @@ public:
 
   altitude_t &operator()(dimension_t x, dimension_t y);
 
+  friend void swap(Terrain &first, Terrain &second);
+
+  Terrain &operator=(Terrain other);
+
   bool saveFile(const std::string &fileName) const;
 
   bool readFile(const std::string &fileName);
