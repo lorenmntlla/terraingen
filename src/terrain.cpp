@@ -167,8 +167,10 @@ void Terrain::generate(double rugosity) {
         "Rugosity must be between 0 and 1 inclusive. Received: " +
         std::to_string(rugosity));
 
-  if (!m_isSeeded)
+  if (!m_isSeeded) {
     m_seed = std::random_device{}();
+    m_isSeeded = true;
+  }
 
   m_rugosity = rugosity;
   m_range = m_maxHeight;
