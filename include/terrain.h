@@ -9,6 +9,9 @@ class Terrain {
   dimension_t m_side;
 
   double m_rugosity;
+  bool m_isSeeded;
+  unsigned long m_seed;
+
   altitude_t m_maxHeight;
   altitude_t m_range;
 
@@ -36,6 +39,10 @@ public:
   bool saveFile(const std::string &fileName) const;
 
   bool readFile(const std::string &fileName);
+
+  unsigned long getSeed() const;
+
+  void setSeed(unsigned long seed);
 
   bool generate(double rugosity);
 

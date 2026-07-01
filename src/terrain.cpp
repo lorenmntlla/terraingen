@@ -1,7 +1,6 @@
 #include "../include/terrain.h"
 #include "../include/parseNumber.h"
 #include <cerrno>
-#include <chrono>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -14,7 +13,8 @@
 
 Terrain::Terrain(dimension_t expoent)
     : m_side{(expoent > 0) ? (dimension_t)std::pow(2, expoent) + 1 : 0},
-      m_rugosity{}, m_maxHeight{INT8_MAX}, m_range{},
+      m_rugosity{}, m_isSeeded{false}, m_seed{}, m_maxHeight{INT8_MAX},
+      m_range{},
       m_heightmap{(m_side > 0) ? new altitude_t[m_side * m_side]() : nullptr} {
   if (m_side < 3)
     throw std::invalid_argument("Expoent must be greater than 0. Received: " +
@@ -23,6 +23,7 @@ Terrain::Terrain(dimension_t expoent)
 
 Terrain::Terrain(const Terrain &other)
     : m_side{other.m_side}, m_rugosity{other.m_rugosity},
+      m_isSeeded{other.m_isSeeded}, m_seed{other.m_seed},
       m_maxHeight{other.m_maxHeight}, m_range{other.m_range},
       m_heightmap{new altitude_t[m_side * m_side]} {
   memcpy(m_heightmap, other.m_heightmap, m_side * m_side);
@@ -139,11 +140,29 @@ bool Terrain::readFile(const std::string &fileName) {
   return true;
 };
 
+unsigned long Terrain::getSeed() const {
+  if (!m_isSeeded) {
+    std::cerr << "Terrain is not seeded.\n";
+
+    return 0;
+  }
+
+  return m_seed;
+}
+
+void Terrain::setSeed(unsigned long seed) {
+  m_seed = seed;
+  m_isSeeded = true;
+}
+
 bool Terrain::generate(double rugosity) {
   if (rugosity < 0 or rugosity > 1)
     throw std::invalid_argument(
         "Rugosity must be between 0 and 1 inclusive. Received: " +
         std::to_string(rugosity));
+
+  if (!m_isSeeded)
+    m_seed = std::random_device{}();
 
   m_rugosity = rugosity;
   m_range = m_maxHeight;
@@ -174,18 +193,7 @@ dimension_t Terrain::columns() const { return m_side; }
 altitude_t *Terrain::data() { return m_heightmap; }
 
 altitude_t Terrain::noise() const {
-  thread_local std::random_device rd{};
-  thread_local std::seed_seq seed{
-      static_cast<std::seed_seq::result_type>(
-          std::chrono::high_resolution_clock::now().time_since_epoch().count()),
-      rd(),
-      rd(),
-      rd(),
-      rd(),
-      rd(),
-      rd(),
-      rd()};
-  thread_local std::mt19937 generator{seed};
+  thread_local std::mt19937 generator{m_seed};
 
   std::uniform_int_distribution<altitude_t> dist{
       static_cast<altitude_t>(-m_range), m_range};
@@ -249,6 +257,8 @@ void swap(Terrain &first, Terrain &second) noexcept {
 
   swap(first.m_side, second.m_side);
   swap(first.m_rugosity, second.m_rugosity);
+  swap(first.m_isSeeded, second.m_isSeeded);
+  swap(first.m_seed, second.m_seed);
   swap(first.m_maxHeight, second.m_maxHeight);
   swap(first.m_range, second.m_range);
   swap(first.m_heightmap, second.m_heightmap);

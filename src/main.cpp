@@ -2,20 +2,26 @@
 #include "color.h"
 #include "dimension.h"
 #include "image.h"
+#include "parseNumber.h"
 #include <cmath>
 #include <iostream>
 
 int main(int argc, char **argv) {
   if (argc < 3) {
-    std::cout << "Usage: " << "terraingen" << " side rugosity\n";
+    std::cout << "Usage: " << "terraingen" << " side rugosity [seed]\n";
     return 1;
   }
 
-  const dimension_t expoent = (dimension_t)atoi(argv[1]);
+  const dimension_t expoent{parseNumber<dimension_t>(argv[1])};
 
   const dimension_t side{(dimension_t)std::pow(2, expoent) + 1};
 
   Terrain map{expoent};
+
+  if (argc > 3) {
+    unsigned long seed{parseNumber<unsigned long>(argv[3])};
+    map.setSeed(seed);
+  }
 
   map.generate(atof(argv[2]));
 
