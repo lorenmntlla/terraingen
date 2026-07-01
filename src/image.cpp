@@ -17,6 +17,8 @@ Image::Image(const Image &other)
   memcpy(m_pixels, other.m_pixels, m_length * m_height * sizeof(Color));
 }
 
+Image::Image(Image &&other) noexcept : Image() { swap(*this, other); }
+
 Image::~Image() {
   delete[] m_pixels;
   m_pixels = nullptr;
@@ -30,15 +32,8 @@ Color &Image::operator()(dimension_t x, dimension_t y) {
   return m_pixels[y * m_length + x];
 }
 
-void swap(Image &first, Image &second) {
-  using std::swap;
 
-  swap(first.m_length, second.m_length);
-  swap(first.m_height, second.m_height);
-  swap(first.m_pixels, second.m_pixels);
-}
-
-Image &Image::operator=(Image other) {
+Image &Image::operator=(Image other) noexcept {
   swap(*this, other);
   return *this;
 }
@@ -136,3 +131,11 @@ dimension_t Image::length() const { return m_length; }
 dimension_t Image::height() const { return m_height; }
 
 Color *Image::data() const { return m_pixels; }
+
+void swap(Image &first, Image &second) noexcept {
+  using std::swap;
+
+  swap(first.m_length, second.m_length);
+  swap(first.m_height, second.m_height);
+  swap(first.m_pixels, second.m_pixels);
+}

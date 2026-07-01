@@ -14,15 +14,15 @@ public:
 
   Image(const Image &other);
 
+  Image(Image &&other) noexcept;
+
   ~Image();
 
   Color &operator()(dimension_t x, dimension_t y) const;
 
   Color &operator()(dimension_t x, dimension_t y);
 
-  friend void swap(Image &first, Image &second);
-
-  Image &operator=(Image other);
+  Image &operator=(Image other) noexcept;
 
   bool savePPM(const std::string &fileName) const;
 
@@ -33,4 +33,6 @@ public:
   dimension_t height() const;
 
   Color *data() const;
+
+  friend void swap(Image &first, Image &second) noexcept;
 };

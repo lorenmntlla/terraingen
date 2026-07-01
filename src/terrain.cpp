@@ -28,6 +28,8 @@ Terrain::Terrain(const Terrain &other)
   memcpy(m_heightmap, other.m_heightmap, m_side * m_side);
 }
 
+Terrain::Terrain(Terrain &&other) noexcept : Terrain() { swap(*this, other); }
+
 Terrain::~Terrain() {
   delete[] m_heightmap;
   m_heightmap = nullptr;
@@ -41,17 +43,7 @@ altitude_t &Terrain::operator()(dimension_t x, dimension_t y) {
   return m_heightmap[y * m_side + x];
 }
 
-void swap(Terrain &first, Terrain &second) {
-  using std::swap;
-
-  swap(first.m_side, second.m_side);
-  swap(first.m_rugosity, second.m_rugosity);
-  swap(first.m_maxHeight, second.m_maxHeight);
-  swap(first.m_range, second.m_range);
-  swap(first.m_heightmap, second.m_heightmap);
-}
-
-Terrain &Terrain::operator=(Terrain other) {
+Terrain &Terrain::operator=(Terrain other) noexcept {
   swap(*this, other);
   return *this;
 }
@@ -250,4 +242,14 @@ void Terrain::square(dimension_t chunk) {
       operator()(dx, dy) = static_cast<altitude_t>((sum / count) + noise());
     }
   }
+}
+
+void swap(Terrain &first, Terrain &second) noexcept {
+  using std::swap;
+
+  swap(first.m_side, second.m_side);
+  swap(first.m_rugosity, second.m_rugosity);
+  swap(first.m_maxHeight, second.m_maxHeight);
+  swap(first.m_range, second.m_range);
+  swap(first.m_heightmap, second.m_heightmap);
 }

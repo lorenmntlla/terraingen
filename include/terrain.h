@@ -23,15 +23,15 @@ public:
 
   Terrain(const Terrain &other);
 
+  Terrain(Terrain &&other) noexcept;
+
   ~Terrain();
 
   altitude_t &operator()(dimension_t x, dimension_t y) const;
 
   altitude_t &operator()(dimension_t x, dimension_t y);
 
-  friend void swap(Terrain &first, Terrain &second);
-
-  Terrain &operator=(Terrain other);
+  Terrain &operator=(Terrain other) noexcept;
 
   bool saveFile(const std::string &fileName) const;
 
@@ -46,4 +46,6 @@ public:
   dimension_t columns() const;
 
   altitude_t *data();
+
+  friend void swap(Terrain &first, Terrain &second) noexcept;
 };
