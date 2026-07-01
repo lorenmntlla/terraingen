@@ -1,2 +1,3 @@
 #pragma once
-using dimension_t = long unsigned int;
+#include <cstddef>
+using dimension_t = size_t;
