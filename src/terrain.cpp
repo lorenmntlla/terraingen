@@ -13,8 +13,7 @@
 
 Terrain::Terrain(dimension_t expoent)
     : m_side{(expoent > 0) ? (dimension_t)std::pow(2, expoent) + 1 : 0},
-      m_rugosity{}, m_isSeeded{false}, m_seed{}, m_maxHeight{INT8_MAX},
-      m_range{},
+      m_isSeeded{false}, m_seed{}, m_maxHeight{INT8_MAX}, m_range{},
       m_heightmap{(m_side > 0) ? new altitude_t[m_side * m_side]() : nullptr} {
   if (m_side < 3)
     throw std::invalid_argument("Expoent must be greater than 0. Received: " +
@@ -22,8 +21,7 @@ Terrain::Terrain(dimension_t expoent)
 }
 
 Terrain::Terrain(const Terrain &other)
-    : m_side{other.m_side}, m_rugosity{other.m_rugosity},
-      m_isSeeded{other.m_isSeeded}, m_seed{other.m_seed},
+    : m_side{other.m_side}, m_isSeeded{other.m_isSeeded}, m_seed{other.m_seed},
       m_maxHeight{other.m_maxHeight}, m_range{other.m_range},
       m_heightmap{new altitude_t[m_side * m_side]} {
   memcpy(m_heightmap, other.m_heightmap, m_side * m_side);
@@ -172,7 +170,6 @@ void Terrain::generate(double rugosity) {
     m_isSeeded = true;
   }
 
-  m_rugosity = rugosity;
   m_range = m_maxHeight;
 
   const dimension_t boundary{m_side - 1};
@@ -186,7 +183,7 @@ void Terrain::generate(double rugosity) {
     diamond(chunk);
     square(chunk);
 
-    m_range = altitude_t(m_range * m_rugosity);
+    m_range = altitude_t(m_range * rugosity);
   }
 }
 
@@ -262,7 +259,6 @@ void swap(Terrain &first, Terrain &second) noexcept {
   using std::swap;
 
   swap(first.m_side, second.m_side);
-  swap(first.m_rugosity, second.m_rugosity);
   swap(first.m_isSeeded, second.m_isSeeded);
   swap(first.m_seed, second.m_seed);
   swap(first.m_maxHeight, second.m_maxHeight);

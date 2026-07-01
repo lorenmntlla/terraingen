@@ -8,7 +8,6 @@ using altitude_t = int8_t;
 class Terrain {
   dimension_t m_side;
 
-  double m_rugosity;
   bool m_isSeeded;
   unsigned long m_seed;
 
