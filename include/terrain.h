@@ -44,7 +44,7 @@ public:
 
   void setSeed(unsigned long seed);
 
-  bool generate(double rugosity);
+  void generate(double rugosity);
 
   dimension_t side() const;
 

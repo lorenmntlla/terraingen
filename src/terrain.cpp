@@ -161,7 +161,7 @@ void Terrain::setSeed(unsigned long seed) {
   m_isSeeded = true;
 }
 
-bool Terrain::generate(double rugosity) {
+void Terrain::generate(double rugosity) {
   if (rugosity < 0 or rugosity > 1)
     throw std::invalid_argument(
         "Rugosity must be between 0 and 1 inclusive. Received: " +
@@ -186,8 +186,6 @@ bool Terrain::generate(double rugosity) {
 
     m_range = altitude_t(m_range * m_rugosity);
   }
-
-  return true;
 }
 
 dimension_t Terrain::side() const { return m_side; }
