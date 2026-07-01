@@ -8,8 +8,8 @@ using altitude_t = int8_t;
 class Terrain {
   dimension_t m_side;
 
-  bool m_isSeeded;
   unsigned long m_seed;
+  bool m_isSeeded;
 
   altitude_t m_maxHeight;
   altitude_t m_range;
