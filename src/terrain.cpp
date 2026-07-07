@@ -185,6 +185,30 @@ void Terrain::generate(double rugosity) {
     m_range = altitude_t(m_range * rugosity);
   }
 }
+Image Terrain::image(const Palette &palette) const {
+  Image image{m_side, m_side};
+  const size_t numColors{palette.size()};
+
+  if (numColors == 0)
+    return image;
+
+  const size_t slice{(unsigned)m_maxHeight / numColors};
+  const size_t totalPixels{m_side * m_side};
+  for (size_t i{0}; i < totalPixels; i++) {
+
+    size_t colorIndex{(unsigned)abs(m_heightmap[i]) / slice};
+
+    if (colorIndex >= numColors)
+      colorIndex = numColors - 1;
+
+    auto color{palette.getColor(colorIndex)};
+    if (color) {
+      image.data()[i] = *color;
+    }
+  }
+
+  return image;
+}
 
 dimension_t Terrain::side() const { return m_side; }
 
