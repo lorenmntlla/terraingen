@@ -45,6 +45,8 @@ public:
 
   void generate(double rugosity);
 
+  [[nodiscard]] Image image(const Palette &palette) const;
+
   dimension_t side() const;
 
   dimension_t lines() const;
