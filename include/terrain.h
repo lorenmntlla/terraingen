@@ -1,9 +1,10 @@
 #pragma once
 #include "dimension.h"
-#include <cstdint>
+#include "image.h"
+#include "palette.h"
 #include <string>
 
-using altitude_t = int8_t;
+using altitude_t = int;
 
 class Terrain {
   dimension_t m_side;
