@@ -204,6 +204,11 @@ Image Terrain::image(const Palette &palette) const {
     auto color{palette.getColor(colorIndex)};
     if (color) {
       image.data()[i] = *color;
+
+      const dimension_t topLeft{m_side + 1};
+      if (i >= (topLeft) and m_heightmap[i - topLeft] > m_heightmap[i]) {
+        image.data()[i] = *color * 0.75;
+      }
     }
   }
 
