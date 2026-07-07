@@ -1,55 +1,33 @@
 #include "../include/terrain.h"
-#include "color.h"
 #include "dimension.h"
-#include "image.h"
+#include "palette.h"
 #include "parseNumber.h"
-#include <cmath>
 #include <iostream>
 
 int main(int argc, char **argv) {
-  if (argc < 3) {
-    std::cout << "Usage: " << "terraingen" << " side rugosity [seed]\n";
+  if (argc < 4) {
+    std::cout << "Usage: " << "terraingen"
+              << " output palette side [seed] [rugosity]\n";
     return 1;
   }
 
-  const dimension_t expoent{parseNumber<dimension_t>(argv[1])};
+  const dimension_t expoent{parseNumber<dimension_t>(argv[3])};
 
-  const dimension_t side{(dimension_t)std::pow(2, expoent) + 1};
+  Terrain terrain{expoent};
 
-  Terrain map{expoent};
-
-  if (argc > 3) {
-    unsigned long seed{parseNumber<unsigned long>(argv[3])};
-    map.setSeed(seed);
+  if (argc > 4) {
+    unsigned long seed{parseNumber<unsigned long>(argv[4])};
+    terrain.setSeed(seed);
   }
 
-  map.generate(atof(argv[2]));
+  if (argc > 5)
+    terrain.generate(atof(argv[5]));
+  else
+    terrain.generate(0.625);
 
-  map.saveFile("terrain.hgm");
+  Palette palette{argv[2]};
 
-  Terrain terrain{};
-
-  if (!terrain.readFile("terrain.hgm"))
-    return 1;
-
-  Image canvas{side, side};
-
-  const dimension_t totalPoints{side * side};
-  for (dimension_t point{0}; point < totalPoints; point++) {
-    const altitude_t red_mask{0b0000'0110};
-    const altitude_t green_mask{0b0110'0000};
-    const altitude_t blue_mask{0b0001'1000};
-
-    const altitude_t height{terrain.data()[point]};
-
-    const channel_t r{(channel_t)((height & red_mask))};
-    const channel_t g{(channel_t)(height & green_mask)};
-    const channel_t b{(channel_t)(height & blue_mask)};
-
-    canvas.data()[point] = {r, g, b};
-  }
-
-  canvas.savePPM("terrain.ppm");
+  terrain.image(palette).savePPM(argv[1]);
 
   return 0;
 }
