@@ -1,18 +1,29 @@
 #include "../include/palette.h"
 #include "../include/parseNumber.h"
+#include <cerrno>
+#include <cstdlib>
 #include <fstream>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <system_error>
 
 Palette::Palette() : m_colors{} {}
 
 Palette::Palette(const std::string &fileName) : m_colors{} {
   std::ifstream file{fileName};
 
-  if (!file)
-    throw std::system_error(errno, std::generic_category(), fileName);
+  if (!file) {
+    auto err{errno};
+    std::cerr << "Could not open " << fileName;
+
+    if (err != 0)
+      std::cerr << ": " << std::generic_category().message(err);
+
+    std::cerr << '\n';
+
+    return;
+  }
 
   std::string hex{};
 
