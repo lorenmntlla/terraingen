@@ -189,7 +189,7 @@ Image Terrain::image(const Palette &palette) const {
   Image image{m_side, m_side};
   const size_t numColors{palette.size()};
 
-  if (numColors == 0)
+  if (numColors == 0 or numColors > (unsigned)m_maxHeight)
     return image;
 
   const size_t slice{(unsigned)m_maxHeight / numColors};
