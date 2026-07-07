@@ -37,7 +37,7 @@ public:
 
   bool saveFile(const std::string &fileName) const;
 
-  bool readFile(const std::string &fileName);
+  [[nodiscard]] bool readFile(const std::string &fileName);
 
   unsigned long getSeed() const;
 
