@@ -47,10 +47,10 @@ std::optional<Color> Palette::getColor(size_t i) const {
   return m_colors[i];
 }
 
-void Palette::addColor(const Color &color) { m_colors.push_back(color); }
+void Palette::addColor(Color color) { m_colors.emplace_back(color); }
 
 void Palette::addColor(channel_t r, channel_t g, channel_t b) {
-  m_colors.push_back(Color{r, g, b});
+  m_colors.emplace_back(r, g, b);
 }
 
 void Palette::addColor(std::string_view hex) {
@@ -67,5 +67,5 @@ void Palette::addColor(std::string_view hex) {
   channel_t green = parseNumber<channel_t>(hex.substr(2, 2), 16);
   channel_t blue = parseNumber<channel_t>(hex.substr(4, 2), 16);
 
-  m_colors.push_back(Color{red, green, blue});
+  m_colors.emplace_back(red, green, blue);
 }

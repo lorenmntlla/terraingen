@@ -20,7 +20,7 @@ public:
 
   std::optional<Color> getColor(size_t i) const;
 
-  void addColor(const Color &color);
+  void addColor(Color color);
 
   void addColor(channel_t r, channel_t g, channel_t b);
 
