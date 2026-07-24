@@ -4,6 +4,9 @@ Uses the Diamond-Square algorithm to create realistic fractal heightmaps,
 applies customizable hex-based color palettes,
 and outputs shaded heightmaps directly as Netpbm PPM images.
 
+![Terrain with Seed 3, expoent 10](terrain_seed3.png)
+_Converted to png with ImageMagick for better web visualization_
+
 ## Features
 
 * **Diamond-Square Algorithm:** Generates procedural heightmap
